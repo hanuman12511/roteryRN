@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "876926225760",
+    "project_id": "rotrary-club",
+    "storage_bucket": "rotrary-club.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876926225760:android:48f2e7b75c947f22c52205",
+        "android_client_info": {
+          "package_name": "com.doomshell.rotaryclub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876926225760-sha5n4alm1o50ft71ikc8ueirj06cvsg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpel3-jhxguImHL5FUHPZUTTpytVWQ4FE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876926225760-sha5n4alm1o50ft71ikc8ueirj06cvsg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

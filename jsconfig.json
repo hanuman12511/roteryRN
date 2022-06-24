@@ -1,0 +1,17 @@
+{
+      "compilerOptions": {
+        "baseUrl": "src",
+        "paths": {
+          "assets/*": ["assets/*"],
+          "api/*": ["api/*"],
+          "components/*": ["components/*"],
+          "firebase_api/*": ["firebase_api/*"],
+          "routes/*": ["routes/*"],
+          "screens/*": ["screens/*"],
+          "validations/*": ["validations/*"],
+          "idsStore/*": ["idsStore/*"],
+
+        }
+      },
+      "include": ["index.js", "App.js", "src/**/*"]
+    }
