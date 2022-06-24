@@ -144,7 +144,7 @@ export const createOnTokenRefreshListener = thisArg => {
 };
 
 export const removeOnTokenRefreshListener = thisArg => {
-  thisArg.onTokenRefreshListener();
+  // thisArg.onTokenRefreshListener();
 };
 
 // Notification Listeners

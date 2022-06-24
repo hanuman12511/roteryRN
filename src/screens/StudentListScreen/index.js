@@ -87,7 +87,7 @@ class StudentListScreen extends Component {
         {this.state.connectionState && (
           <>
             <View style={styles.headerContainer}>
-              <Text style={styles.headerContent}>Student List</Text>
+              <Text style={styles.headerContent}>Members List</Text>
             </View>
             <View style={styles.listContainer}>
               <FlatList

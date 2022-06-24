@@ -8,8 +8,8 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    height: wp(18),
-    aspectRatio: 2 / 1,
+    height: wp(25),
+    aspectRatio: 1 / 1,
     alignSelf: 'center',
     marginBottom: hp(5),
   },

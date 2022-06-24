@@ -26,8 +26,8 @@ import {sessionOperations, sessionSelectors} from 'idsStore/data/session';
 import {checkPermission} from 'firebase_api';
 
 // Images
-import login_background_bg from 'assets/images/login_background_bg.png';
-import app_logo_white from 'assets/images/app_logo_white.png';
+import login_background_bg from 'assets/images/background.webp';
+import app_logo_white from 'assets/images/RotaryClub.png';
 
 // Icons
 import ic_mobile from 'assets/icons/ic_mobile.png';
@@ -54,9 +54,9 @@ class LoginScreen extends Component {
     };
 
     this.radio_props = [
-      {label: 'Student', value: 0},
-      {label: 'Staff', value: 1},
-      {label: 'Admin', value: 2},
+      {label: 'Member', value: 0},
+      {label: 'President', value: 1},
+      {label: 'DG', value: 2},
     ];
   }
 
@@ -230,7 +230,7 @@ class LoginScreen extends Component {
         {this.state.connectionState && (
           <>
             <View style={styles.loginTopBar}>
-              <Text style={styles.loginTopBarContent}>iDSPrime</Text>
+              <Text style={styles.loginTopBarContent}>Rotary Club</Text>
             </View>
 
             <ImageBackground

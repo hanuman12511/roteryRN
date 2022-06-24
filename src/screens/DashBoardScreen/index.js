@@ -36,6 +36,9 @@ import ic_gatepass from 'assets/icons/ic_gatepass.png';
 import ic_my_suggestion from 'assets/icons/ic_my_suggestion.png';
 import ic_view_profile from 'assets/icons/ic_view_profile.png';
 
+import B1 from 'assets/images/B1.jpeg';
+import B2 from 'assets/images/B2.jpeg';
+import B3 from 'assets/images/B3.jpeg';
 //data
 import {connect} from 'react-redux';
 import {sliderOperations, sliderSelectors} from 'idsStore/data/slider';
@@ -60,7 +63,7 @@ class DashBoardScreen extends Component {
     this.state = {
       isLoading: true,
       connectionState: true,
-      sliderImages: [],
+      sliderImages: [(image = B1), (image = B2), (image = B3)],
       notificationCount: 0,
       appState: AppState.currentState,
     };
@@ -101,10 +104,7 @@ class DashBoardScreen extends Component {
               }
             };
 
-            this.setState(
-              {sliderImages, isLoading: false},
-              postStateUpdateCallback,
-            );
+            this.setState({isLoading: false}, postStateUpdateCallback);
           } else {
             await this.fetchNotificationCount();
             this.setState({sliderImages: [], isLoading: false});
@@ -222,20 +222,20 @@ class DashBoardScreen extends Component {
             <View style={styles.tilesContainer}>
               <View style={styles.tilesRow}>
                 <Tile
-                  title="Attendance"
+                  title="Clubs"
                   color="#5366c7"
                   image={ic_attendance}
                   nav={navigation}
                 />
                 <Tile
-                  title="Homework"
+                  title="Directory"
                   color="#f17b91"
                   image={ic_assignment_white}
                   nav={navigation}
                 />
 
                 <Tile
-                  title="Time Table"
+                  title="Events"
                   color="#982257"
                   image={ic_timetable}
                   nav={navigation}
@@ -244,9 +244,9 @@ class DashBoardScreen extends Component {
 
               <View style={styles.tilesRow}>
                 <Tile
-                  title="Results"
-                  color="#0095ae"
-                  image={ic_results}
+                  title="Photo Gallery"
+                  color="#dec03e"
+                  image={ic_gallery}
                   nav={navigation}
                 />
                 {/* shifted here from below row(to be removed) */}
@@ -270,7 +270,7 @@ class DashBoardScreen extends Component {
                   />
                 )}
                 <Tile
-                  title="Library"
+                  title="Member List"
                   color="#c09960"
                   image={ic_library}
                   nav={navigation}
@@ -284,48 +284,21 @@ class DashBoardScreen extends Component {
                   image={ic_calendar}
                   nav={navigation}
                 />
-                {/* <Tile
-							title='Photo Gallery'
-							color='#d2434e'
-							image={ic_gallery}
-							nav={navigation}
-						/> */}
+
                 <Tile
-                  title="Date Sheet/Syllabus"
+                  title="President Message"
                   color="#f2713a"
                   image={ic_date_sheet}
                   nav={navigation}
                 />
                 <Tile
-                  title="Fees"
-                  color="#b59339"
-                  image={ic_fee}
+                  title="Faq"
+                  color="#33a375"
+                  image={ic_gatepass}
                   nav={navigation}
                 />
               </View>
-
               {/* <View style={styles.tilesRow}>
-						<Tile
-							title='Notice Board'
-							color='#982257'
-							image={ic_notice_board}
-							nav={navigation}
-						/>
-						<Tile
-							title='Transport'
-							color='#d4ab70'
-							image={ic_tranport}
-							nav={navigation}
-						/>
-						<Tile
-							title='Hostel'
-							color='#e28e00'
-							image={ic_hostel}
-							nav={navigation}
-						/>
-					</View> */}
-
-              <View style={styles.tilesRow}>
                 <Tile
                   title="Gate Pass"
                   color="#33a375"
@@ -344,7 +317,7 @@ class DashBoardScreen extends Component {
                   image={ic_gallery}
                   nav={navigation}
                 />
-              </View>
+              </View> */}
             </View>
           </>
         )}
