@@ -18,11 +18,11 @@ import FastImage from 'react-native-fast-image';
 //gif
 import offline from 'assets/icons/internetConnectionState.gif';
 // Icons
-import ic_attendance from 'assets/icons/ic_attendance.png';
+import ic_attendance from 'assets/icons/ic_dashboard_club.png';
 import ic_fee from 'assets/icons/ic_fee.png';
-import ic_timetable from 'assets/icons/ic_timetable.png';
+import ic_timetable from 'assets/icons/ic_dashboard_events.png';
 import ic_results from 'assets/icons/ic_results.png';
-import ic_library from 'assets/icons/ic_library.png';
+import ic_library from 'assets/icons/ic_dashboard_members.png';
 import ic_calendar from 'assets/icons/ic_calendar.png';
 import ic_tranport from 'assets/icons/ic_tranport.png';
 import ic_gallery from 'assets/icons/ic_gallery.png';
@@ -30,9 +30,9 @@ import ic_hostel from 'assets/icons/ic_hostel.png';
 import ic_date_sheet from 'assets/icons/ic_date_sheet.png';
 import ic_notification_white from 'assets/icons/ic_notification_white.png';
 import ic_notice_board from 'assets/icons/ic_notice_board.png';
-import ic_assignment_white from 'assets/icons/ic_assignment_white.png';
+import ic_assignment_white from 'assets/icons/ic_dashboard_directory.png';
 import ic_multi_student from 'assets/icons/ic_multi_student.png';
-import ic_gatepass from 'assets/icons/ic_gatepass.png';
+import ic_gatepass from 'assets/icons/ic_dashboard_faq.png';
 import ic_my_suggestion from 'assets/icons/ic_my_suggestion.png';
 import ic_view_profile from 'assets/icons/ic_view_profile.png';
 

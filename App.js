@@ -96,6 +96,13 @@ import TeacherTakeStudentPhoto from './src/screens/TeacherTakeStudentPhoto';
 import addStudentPhoto from './src/screens/TeacherTakeStudentPhoto/addStudentPhoto';
 import takeStudentPhoto from './src/screens/TeacherTakeStudentPhoto/takeStudentPhoto';
 import UpdateTeacherPhoto from './src/screens/ProfileScreen/updateTeacherPhoto';
+
+// FAQ Screen
+import FaqTabScreen from 'screens/FaqTabScreen';
+import FAQScreen from 'screens/FAQScreen/FAQScreen';
+import FAQQuestionsScreen from 'screens/FAQQuestionsScreen';
+import FAQAnsScreen from 'screens/FAQAnsScreen/FAQAnsScreen';
+
 // Member List
 import MemberList from './src/screens/MemberList';
 import MemberDetailScreen from './src/screens/MemberDetailScreen';
@@ -117,6 +124,7 @@ import AdminProsAdmissionScreen from './src/screens/AdminProsAdmissionScreen';
 import AdminGallery from './src/screens/AdminGalleryScreen';
 import AdminPhotoGalleryDetail from './src/screens/AdminGalleryScreen/AdminPhotoGalleryDetailScreen';
 //admin photo gallery screens
+import GalleryTabScreen from './src/screens/GalleryTabScreen';
 import PhotoGalleryFolderScreen from './src/screens/AdminPhotoGalleryScreens/PhotoGalleryFolderScreen';
 import PhotoGalleryScreen from './src/screens/AdminPhotoGalleryScreens/PhotoGalleryScreen';
 import PhotoGalleryViewerScreen from './src/screens/AdminPhotoGalleryScreens/PhotoGalleryViewerScreen';
@@ -179,6 +187,11 @@ import ic_lead_black from './src/assets/icons/drawer_icons/ic_lead_black.png';
 import ic_Prospectus_manager from './src/assets/icons/drawer_icons/ic_Prospectus_manager.png';
 import ic_complaint_black from './src/assets/icons/drawer_icons/ic_complaint_black.png';
 import ic_visitor_black from './src/assets/icons/drawer_icons/ic_visitor_black.png';
+import ic_dashboard_club from './src/assets/icons/drawer_icons/ic_dashboard_club_black.png';
+import ic_dashboard_directory from './src/assets/icons/drawer_icons/ic_dashboard_directory_black.png';
+import ic_dashboard_events from './src/assets/icons/drawer_icons/ic_dashboard_events_black.png';
+import ic_dashboard_faq from './src/assets/icons/drawer_icons/ic_dashboard_faq_black.png';
+import ic_dashboard_members from './src/assets/icons/drawer_icons/ic_dashboard_members_black.png';
 
 // User Preference
 import {
@@ -423,12 +436,13 @@ const AdminGalleryNavigator = createStackNavigator(
 );
 const AdminPhotoGalleryNavigator = createStackNavigator(
   {
+    GalleryTabScreen: GalleryTabScreen,
     'Photo Gallery': PhotoGalleryFolderScreen,
     PhotoGallery: PhotoGalleryScreen,
     PhotoGalleryViewer: PhotoGalleryViewerScreen,
   },
   {
-    initialRouteName: 'Photo Gallery',
+    initialRouteName: 'GalleryTabScreen',
     defaultNavigationOptions: {
       headerShown: false,
     },
@@ -770,6 +784,19 @@ const ClubNavigator = createStackNavigator(
   },
 );
 
+const FaqNavigator = createStackNavigator(
+  {
+    FaqTab: FaqTabScreen,
+    FAQ: FAQScreen,
+    'FAQ Questions': FAQQuestionsScreen,
+    'FAQ Answer': FAQAnsScreen,
+  },
+  {
+    initialRouteName: 'FaqTab',
+    headerMode: 'none',
+  },
+);
+
 const StudentDrawerNavigator = createDrawerNavigator(
   {
     Home: {
@@ -780,70 +807,38 @@ const StudentDrawerNavigator = createDrawerNavigator(
       screen: ProfileScreen,
       navigationOptions: setDrawerItemIcon(ic_view_profile_black),
     },
-    'Student Attendance': {
-      screen: AttendanceScreen,
-      navigationOptions: setDrawerItemIcon(ic_attendance_black),
-    },
+
     'Member List': {
       screen: MemberList,
-      navigationOptions: setDrawerItemIcon(ic_attendance_black),
+      navigationOptions: setDrawerItemIcon(ic_dashboard_members),
     },
     Directory: {
       screen: DirectoryScreen,
-      navigationOptions: setDrawerItemIcon(ic_attendance_black),
+      navigationOptions: setDrawerItemIcon(ic_dashboard_directory),
     },
     Events: {
       screen: EventNavigator,
-      navigationOptions: setDrawerItemIcon(ic_attendance_black),
+      navigationOptions: setDrawerItemIcon(ic_dashboard_events),
     },
     Clubs: {
       screen: ClubNavigator,
-      navigationOptions: setDrawerItemIcon(ic_attendance_black),
+      navigationOptions: setDrawerItemIcon(ic_dashboard_club),
     },
-    Fees: {
-      screen: TakePaidFeeStackNavigator,
-      navigationOptions: setDrawerItemIcon(ic_fee_black),
-    },
-    'Time Table': {
-      screen: StudentTimeTableScreen,
-      navigationOptions: setDrawerItemIcon(ic_timetable_black),
-    },
-    Homework: {
-      screen: StudentAssignmentScreen,
-      navigationOptions: setDrawerItemIcon(ic_assignment_black),
-    },
-    Results: {
-      screen: ResultScreen,
-      navigationOptions: setDrawerItemIcon(ic_results),
-    },
-    Library: {
-      screen: LibraryStackNavigator,
-      navigationOptions: setDrawerItemIcon(ic_library_black),
-    },
+
     Calendar: {
       screen: AdminCalendarScreen,
       navigationOptions: setDrawerItemIcon(ic_calendar_black),
     },
-    // Transport: {
-    // 	screen: TransportScreen,
-    // 	navigationOptions: setDrawerItemIcon(ic_tranport),
-    // },
+
     'Photo Gallery': {
       screen: AdminPhotoGalleryNavigator,
       navigationOptions: setDrawerItemIcon(ic_gallery),
     },
-    // Hostel: {
-    // 	screen: HostelScreen,
-    // 	navigationOptions: setDrawerItemIcon(ic_hostel),
-    // },
-    'Date Sheet/Syllabus': {
-      screen: DateSheetScreen,
-      navigationOptions: setDrawerItemIcon(ic_date_sheet),
+    Faq: {
+      screen: FaqNavigator,
+      navigationOptions: setDrawerItemIcon(ic_dashboard_faq),
     },
-    // 'Notice Board': {
-    //   screen: NoticeBoardScreen,
-    //   navigationOptions: setDrawerItemIcon(ic_notice_board_black),
-    // },
+
     Notification: {
       screen: StudentNotificationDetailkNavigator,
       navigationOptions: setDrawerItemIcon(ic_notification),
@@ -853,14 +848,7 @@ const StudentDrawerNavigator = createDrawerNavigator(
       screen: StudentChangePasswordScreen,
       navigationOptions: setDrawerItemIcon(ic_change_password),
     },
-    'Gate Pass': {
-      screen: GatePassStackNavigator,
-      navigationOptions: setDrawerItemIcon(ic_gatepass),
-    },
-    'My Suggestion': {
-      screen: MySuggestionStackNavigator,
-      navigationOptions: setDrawerItemIcon(ic_my_suggestion),
-    },
+
     Logout: {
       screen: 'NoScreen',
       navigationOptions: setDrawerItemIcon(ic_logout_black),

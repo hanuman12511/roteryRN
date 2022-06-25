@@ -42,8 +42,11 @@ export default ImageGalleryFolderComponent;
 
 const styles = StyleSheet.create({
   container: {
-    width: wp(48.4),
-    marginRight: wp(1),
+    width: wp(47.4),
+    marginRight: wp(1.5),
+    overflow: 'hidden',
+    borderRadius: wp(3),
+    elevation: 8,
   },
   image: {
     width: '100%',

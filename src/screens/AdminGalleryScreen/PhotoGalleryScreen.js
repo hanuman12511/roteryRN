@@ -11,8 +11,8 @@ import {
 
 // Components
 import {SafeAreaView} from 'react-native-safe-area-context';
-import CustomLoader from '../components/CustomLoader';
-import HeaderComponent from '../components/HeaderComponent';
+import CustomLoader from 'components/CustomLoader';
+import HeaderComponent from 'components/ScreenHeader';
 import GalleryComponent from './components/GalleryComponent';
 
 // API

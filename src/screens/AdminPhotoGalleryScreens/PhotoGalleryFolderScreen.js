@@ -46,13 +46,13 @@ class PhotoGalleryFolderScreen extends Component {
       this.setState({connectionState: state.isConnected});
     });
 
-    // subscribing to didFocus listener
-    this.didFocusSubscription = this.props.navigation.addListener(
-      'didFocus',
-      () => {
-        this.fetchGalleryList();
-      },
-    );
+    // // subscribing to didFocus listener
+    // this.didFocusSubscription = this.props.navigation.addListener(
+    //   'didFocus',
+    //   () => {
+    this.fetchGalleryList();
+    //   },
+    // );
   }
   componentWillUnmount() {
     this.unsubscribe();
@@ -135,11 +135,11 @@ class PhotoGalleryFolderScreen extends Component {
         {this.state.connectionState && (
           <>
             <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-            <ScreenHeader
+            {/* <ScreenHeader
               title="Gallery"
               showSchoolLogo
               nav={this.props.navigation}
-            />
+            /> */}
             {galleryList ? (
               <View style={styles.galleryContainer}>
                 <FlatList
@@ -192,6 +192,7 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ccc',
   },
   galleryContainer: {
     flex: 1,
