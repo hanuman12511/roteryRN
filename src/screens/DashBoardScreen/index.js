@@ -235,37 +235,14 @@ class DashBoardScreen extends Component {
                   nav={navigation}
                 />
                 <Tile
-                  title="Clubs"
-                  color="#5366c7"
-                  image={ic_attendance}
-                  nav={navigation}
-                />
-              </View>
-
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Directory"
-                  color="#f17b91"
-                  image={ic_assignment_white}
-                  nav={navigation}
-                />
-
-                <Tile
                   title="Events"
                   color="#982257"
                   image={ic_timetable}
                   nav={navigation}
                 />
-                <Tile
-                  title="Photo Gallery"
-                  color="#dec03e"
-                  image={ic_gallery}
-                  nav={navigation}
-                />
               </View>
 
               <View style={styles.tilesRow}>
-                {/* shifted here from below row(to be removed) */}
                 {notificationCount !== 0 ? (
                   <Tile
                     title="Announcement"
@@ -285,30 +262,11 @@ class DashBoardScreen extends Component {
                     notificationCount={notificationCount}
                   />
                 )}
+
                 <Tile
                   title="FAQ"
                   color="#ffa000"
                   image={ic_gatepass}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Profile"
-                  color="#ff2f5d"
-                  image={ic_dashboard_profile_white}
-                  nav={navigation}
-                />
-              </View>
-              {/* <View style={styles.tilesRow}>
-                <Tile
-                  title="Gate Pass"
-                  color="#33a375"
-                  image={ic_gatepass}
-                  nav={navigation}
-                />
-                <Tile
-                  title="My Suggestion"
-                  color="#9b2a3e"
-                  image={ic_my_suggestion}
                   nav={navigation}
                 />
                 <Tile
@@ -317,7 +275,18 @@ class DashBoardScreen extends Component {
                   image={ic_gallery}
                   nav={navigation}
                 />
-              </View> */}
+              </View>
+
+              <View style={styles.tilesRow}>
+                {/* shifted here from below row(to be removed) */}
+
+                <Tile
+                  title="Profile"
+                  color="#ff2f5d"
+                  image={ic_dashboard_profile_white}
+                  nav={navigation}
+                />
+              </View>
             </View>
           </>
         )}

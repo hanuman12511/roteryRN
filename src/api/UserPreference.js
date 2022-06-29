@@ -7,6 +7,7 @@ const KEYS = {
   ACTIVE_STUDENT: 'activeStudent',
   ACTIVE_SCHOOL: 'activeSchool',
   DESIGNATION: 'designation',
+  BANNER_SLIDER: 'banners',
 };
 
 export const storeData = async data => {
@@ -19,6 +20,30 @@ export const storeData = async data => {
     console.log('Failed to store data!\nError: ', errMessage);
   }
 };
+
+export const bannerSlider = async data => {
+  try {
+    const info = JSON.stringify(data);
+    await AsyncStorage.setItem(KEYS.BANNER_SLIDER, info);
+  } catch (error) {
+    console.log('Faild to store data for banner sliders', error);
+  }
+};
+
+export const getBannerSlider = async () => {
+  try {
+    const rawData = await AsyncStorage.getItem(KEYS.BANNER_SLIDER);
+    if (!rawData) {
+      return null;
+    }
+    const info = JSON.parse(rawData);
+    return info;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
 export const teacherDesignation = async data => {
   try {
     const info = data;

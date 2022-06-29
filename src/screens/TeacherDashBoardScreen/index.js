@@ -12,22 +12,24 @@ import CustomLoader from 'components/CustomLoader';
 import NetInfo from '@react-native-community/netinfo';
 import FastImage from 'react-native-fast-image';
 // Icons
-import ic_header_option_icon from 'assets/icons/ic_header_option_icon.png';
-import ic_attendance from 'assets/icons/ic_attendance.png';
+import ic_attendance from 'assets/icons/ic_dashboard_club.png';
 import ic_fee from 'assets/icons/ic_fee.png';
-import ic_timetable from 'assets/icons/ic_timetable.png';
+import ic_timetable from 'assets/icons/ic_dashboard_events.png';
 import ic_results from 'assets/icons/ic_results.png';
-import ic_library from 'assets/icons/ic_library.png';
+import ic_library from 'assets/icons/ic_dashboard_members.png';
 import ic_calendar from 'assets/icons/ic_calendar.png';
 import ic_tranport from 'assets/icons/ic_tranport.png';
 import ic_gallery from 'assets/icons/ic_gallery.png';
 import ic_hostel from 'assets/icons/ic_hostel.png';
 import ic_date_sheet from 'assets/icons/ic_date_sheet.png';
+import ic_notification_white from 'assets/icons/ic_notification_white.png';
 import ic_notice_board from 'assets/icons/ic_notice_board.png';
-import ic_change_password from 'assets/icons/ic_change_password.png';
-import takepicture from 'assets/icons/take-picture.png';
-import ic_assignment_white from 'assets/icons/ic_assignment_white.png';
+import ic_assignment_white from 'assets/icons/ic_dashboard_directory.png';
+import ic_multi_student from 'assets/icons/ic_multi_student.png';
+import ic_gatepass from 'assets/icons/ic_dashboard_faq.png';
+import ic_my_suggestion from 'assets/icons/ic_my_suggestion.png';
 import ic_view_profile from 'assets/icons/ic_view_profile.png';
+import ic_dashboard_profile_white from 'assets/icons/ic_dashboard_profile_white.png';
 import offline from 'assets/icons/internetConnectionState.gif';
 //data
 import {connect} from 'react-redux';
@@ -206,49 +208,58 @@ class DashBoardScreen extends React.Component {
             </View>
 
             <View style={styles.tilesContainer}>
-              {this.state.isClassTeacher === true ? (
-                <View style={styles.tilesRow}>
-                  <Tile
-                    title="Attendance"
-                    color="#5366c7"
-                    image={ic_attendance}
-                    nav={navigation}
-                  />
-                  <Tile
-                    title="Student Photos"
-                    color="#d2434e"
-                    image={takepicture}
-                    nav={navigation}
-                  />
-                  <Tile
-                    title="Time Table"
-                    color="#33a375"
-                    image={ic_timetable}
-                    nav={navigation}
-                  />
-                </View>
-              ) : (
-                <View style={styles.tilesRow}>
-                  <Tile
-                    title="Time Table"
-                    color="#33a375"
-                    image={ic_timetable}
-                    nav={navigation}
-                  />
-                </View>
-              )}
-
               <View style={styles.tilesRow}>
                 <Tile
-                  title="Homework"
-                  color="#00c0f0"
-                  image={ic_assignment_white}
+                  title="DG Message"
+                  color="#f2713a"
+                  image={ic_date_sheet}
                   nav={navigation}
                 />
                 <Tile
-                  title="Calendar"
+                  title="Committee"
+                  color="#c09960"
+                  image={ic_library}
+                  nav={navigation}
+                />
+                <Tile
+                  title="Clubs"
+                  color="#5366c7"
+                  image={ic_attendance}
+                  nav={navigation}
+                />
+              </View>
+              <View style={styles.tilesRow}>
+                <Tile
+                  title="Directory"
+                  color="#f17b91"
+                  image={ic_assignment_white}
+                  nav={navigation}
+                />
+
+                <Tile
+                  title="Events"
                   color="#982257"
-                  image={ic_calendar}
+                  image={ic_timetable}
+                  nav={navigation}
+                />
+                <Tile
+                  title="Photo Gallery"
+                  color="#dec03e"
+                  image={ic_gallery}
+                  nav={navigation}
+                />
+              </View>
+              <View style={styles.tilesRow}>
+                <Tile
+                  title="FAQ"
+                  color="#ffa000"
+                  image={ic_gatepass}
+                  nav={navigation}
+                />
+                <Tile
+                  title="Profile"
+                  color="#ff2f5d"
+                  image={ic_dashboard_profile_white}
                   nav={navigation}
                 />
                 {notificationCount !== 0 ? (
@@ -272,39 +283,6 @@ class DashBoardScreen extends React.Component {
                     notificationCount={notificationCount}
                   />
                 )}
-              </View>
-
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Library"
-                  color="#bb4c54"
-                  image={ic_library}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Date Sheet/Syllabus"
-                  color="#2fa8ab"
-                  image={ic_date_sheet}
-                  nav={navigation}
-                />
-                <Tile
-                  title="View Profile"
-                  color="#a4c96a"
-                  image={ic_view_profile}
-                  nav={navigation}
-                />
-                {/* <Tile
-							title='Photo Gallery'
-							color='#d2434e'
-							image={ic_gallery}
-							nav={navigation}
-						/>
-						<Tile
-							title='Transport'
-							color='#d4ab70'
-							image={ic_tranport}
-							nav={navigation}
-						/> */}
               </View>
             </View>
           </>

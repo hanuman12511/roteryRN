@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {styles} from './styles';
 import ImageSlider from 'react-native-image-slider';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -12,28 +12,31 @@ import CustomLoader from 'components/CustomLoader';
 import NetInfo from '@react-native-community/netinfo';
 import FastImage from 'react-native-fast-image';
 // Icons
-import ic_attendance from 'assets/icons/ic_attendance.png';
-import staffAttendance from 'assets/icons/staffAttendance.png';
+import ic_attendance from 'assets/icons/ic_dashboard_club.png';
 import ic_fee from 'assets/icons/ic_fee.png';
-import ic_timetable from 'assets/icons/ic_timetable.png';
-import ic_library from 'assets/icons/ic_library.png';
+import ic_timetable from 'assets/icons/ic_dashboard_events.png';
+import ic_results from 'assets/icons/ic_results.png';
+import ic_library from 'assets/icons/ic_dashboard_members.png';
 import ic_calendar from 'assets/icons/ic_calendar.png';
+import ic_tranport from 'assets/icons/ic_tranport.png';
+import ic_gallery from 'assets/icons/ic_gallery.png';
+import ic_hostel from 'assets/icons/ic_hostel.png';
 import ic_date_sheet from 'assets/icons/ic_date_sheet.png';
+import ic_notification_white from 'assets/icons/ic_notification_white.png';
 import ic_notice_board from 'assets/icons/ic_notice_board.png';
-import StudentSummary from 'assets/icons/StudentSummary.png';
-import schoolProfile from 'assets/icons/schoolProfile.png';
-import ic_HomeWork from 'assets/icons/ic_HomeWork.png';
-import ic_TeacherDetail from 'assets/icons/ic_TeacherDetail.png';
-import visitorCard from 'assets/icons/visitorCard.png';
-import ic_feedback from 'assets/icons/ic_feedback.png';
-import ic_complaint from 'assets/icons/ic_complaint.png';
-import ic_gallery from 'assets/icons/ic_gallery_white.png';
-import lead_management from 'assets/icons/lead_management.png';
-import Prospectus_manager from 'assets/icons/Prospectus_manager.png';
+import ic_assignment_white from 'assets/icons/ic_dashboard_directory.png';
+import ic_multi_student from 'assets/icons/ic_multi_student.png';
+import ic_gatepass from 'assets/icons/ic_dashboard_faq.png';
+import ic_my_suggestion from 'assets/icons/ic_my_suggestion.png';
+import ic_view_profile from 'assets/icons/ic_view_profile.png';
+import ic_dashboard_profile_white from 'assets/icons/ic_dashboard_profile_white.png';
 import offline from 'assets/icons/internetConnectionState.gif';
 //data
 import {connect} from 'react-redux';
 import {sliderOperations, sliderSelectors} from 'idsStore/data/slider';
+
+import remoteConfig from '@react-native-firebase/remote-config';
+import {KEYS, bannerSlider, getBannerSlider} from 'api/UserPreference';
 
 class DashBoardScreen extends Component {
   constructor(props) {
@@ -42,8 +45,10 @@ class DashBoardScreen extends Component {
       isLoading: true,
       sliderImages: [],
       connectionState: true,
+
       // appState: AppState.currentState,
     };
+    this.bannerSlider = '';
   }
 
   componentDidMount() {
@@ -51,6 +56,8 @@ class DashBoardScreen extends Component {
     this.unsubscribe = NetInfo.addEventListener(state => {
       this.setState({connectionState: state.isConnected});
     });
+    this.getRemoteConfig();
+    this.fetchData();
   }
 
   componentWillUnmount() {
@@ -77,6 +84,43 @@ class DashBoardScreen extends Component {
       }
     } catch (error) {
       console.log(error.message);
+    }
+  };
+
+  getRemoteConfig = async () => {
+    try {
+      console.log('data RC 1');
+      await remoteConfig().setDefaults({
+        banners: 'https://www.daac.in/api/mobile/',
+      });
+      console.log('data RC 2');
+      await remoteConfig().setConfigSettings({
+        isDeveloperModeEnabled: __DEV__,
+      });
+      console.log('data RC 3');
+      await remoteConfig().fetch(10);
+      console.log('data RC 4');
+      const activated = await remoteConfig().activate();
+      // const activated = await remoteConfig().fetchAndActivate();
+      console.log('data RC 5', activated);
+      if (activated) {
+        console.log('data activated');
+        let confVal = await remoteConfig().getAll();
+        // let confVal = remoteConfig().getValue('base_url').asString();
+        let banners = confVal.banners._value;
+        await bannerSlider(banners);
+      } else {
+        Alert.alert('', 'not data activated');
+      }
+    } catch (err) {}
+  };
+
+  fetchData = async () => {
+    try {
+      const data = await getBannerSlider();
+      this.bannerSlider = JSON.parse(data);
+    } catch (error) {
+      console.log('banner slider issues', error);
     }
   };
 
@@ -141,7 +185,7 @@ class DashBoardScreen extends Component {
     if (isLoading) {
       return <CustomLoader />;
     }
-
+    console.log(Object.values(this.bannerSlider.slider_banners));
     // Processing data
     const {sliderImages} = this.state;
     const {navigation} = this.props;
@@ -160,133 +204,68 @@ class DashBoardScreen extends Component {
                 loop
                 loopBothSides
                 autoPlayWithInterval={2000}
-                images={sliderImages}
+                images={Object.values(this.bannerSlider.slider_banners)}
               />
             </View>
             <View style={styles.tilesContainer}>
               <View style={styles.tilesRow}>
                 <Tile
-                  title="School Profile"
-                  color="#e80000"
-                  image={schoolProfile}
+                  title="DG Message"
+                  color="#f2713a"
+                  image={ic_date_sheet}
                   nav={navigation}
                 />
                 <Tile
-                  title="Staff Attendance"
-                  color="#c850b0"
-                  image={staffAttendance}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Student Summary"
-                  color="#1e73be"
-                  image={StudentSummary}
-                  nav={navigation}
-                />
-              </View>
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Student Attendance"
-                  color="#660a60"
-                  image={ic_attendance}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Homework"
-                  color="#d4ab70"
-                  image={ic_HomeWork}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Teacher Detail"
-                  color="#982257"
-                  image={ic_TeacherDetail}
-                  nav={navigation}
-                />
-              </View>
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Fees"
-                  color="#f51663"
-                  image={ic_fee}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Time Table"
-                  color="#fd7f20"
-                  image={ic_timetable}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Notification"
-                  color="#335120"
-                  image={ic_notice_board}
-                  nav={navigation}
-                />
-              </View>
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Library"
-                  color="#905fd0"
+                  title="Committee"
+                  color="#c09960"
                   image={ic_library}
                   nav={navigation}
                 />
                 <Tile
-                  title="Calendar"
-                  color="#657f6d"
-                  image={ic_calendar}
+                  title="Clubs"
+                  color="#5366c7"
+                  image={ic_attendance}
                   nav={navigation}
                 />
-                <Tile
-                  title="Date Sheet/Syllabus"
-                  color="#3e004a"
-                  image={ic_date_sheet}
-                  nav={navigation}
-                />
-                {/* <Tile
-              title="Transport"
-              color="#0d5f8a"
-              image={ic_tranport}
-              nav={navigation}
-            />
-            <Tile
-              title="Hostel"
-              color="#d15a50"
-              image={ic_hostel}
-              nav={navigation}
-            /> */}
               </View>
               <View style={styles.tilesRow}>
                 <Tile
-                  title="Visitor"
-                  color="#d15a50"
-                  image={visitorCard}
+                  title="Directory"
+                  color="#f17b91"
+                  image={ic_assignment_white}
                   nav={navigation}
                 />
+
                 <Tile
-                  title="Raise Complaint"
-                  color="#594f92"
-                  image={ic_feedback}
+                  title="Events"
+                  color="#982257"
+                  image={ic_timetable}
                   nav={navigation}
                 />
                 <Tile
                   title="Photo Gallery"
-                  color="#0d5f8a"
+                  color="#dec03e"
                   image={ic_gallery}
                   nav={navigation}
                 />
               </View>
               <View style={styles.tilesRow}>
                 <Tile
-                  title="Leads"
-                  color="#d15a50"
-                  image={lead_management}
+                  title="FAQ"
+                  color="#ffa000"
+                  image={ic_gatepass}
                   nav={navigation}
                 />
                 <Tile
-                  title="Prospectus"
-                  color="#594f92"
-                  image={Prospectus_manager}
+                  title="Profile"
+                  color="#ff2f5d"
+                  image={ic_dashboard_profile_white}
+                  nav={navigation}
+                />
+                <Tile
+                  title="Notification"
+                  color="#335120"
+                  image={ic_notice_board}
                   nav={navigation}
                 />
               </View>
