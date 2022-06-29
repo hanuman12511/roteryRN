@@ -12,41 +12,20 @@ import memberImage from '../assets/images/memberImage.jpg';
 import ic_phone_yellow from '../assets/icons/ic_phone_yellow.png';
 import ic_occupation_yellow from '../assets/icons/ic_occupation_yellow.png';
 
-export default class MemberListComponent extends Component {
-  onEventItemClick = () => {
-    this.props.nav.navigate('MemberDetail');
-  };
+export default class DGMessageListComponent extends Component {
+  //   onEventItemClick = () => {
+  //     this.props.nav.navigate('MemberDetail');
+  //   };
   render() {
-    const {memberName, designation, PhoneNo, occupation} = this.props.item;
+    const {messageTitle, messageDescription} = this.props.item;
     return (
       <TouchableOpacity
         style={styles.tileContainer}
-        onPress={this.onEventItemClick}>
-        <Image
-          source={memberImage}
-          resizeMode="cover"
-          style={styles.memberImage}
-        />
+        // onPress={this.onEventItemClick}
+      >
         <View style={styles.memberDetail}>
-          <Text style={styles.name}>
-            {memberName} <Text style={styles.designation}>({designation})</Text>
-          </Text>
-          <View style={styles.iconData}>
-            <Image
-              source={ic_phone_yellow}
-              resizeMode="cover"
-              style={styles.icons}
-            />
-            <Text style={styles.number}>{PhoneNo}</Text>
-          </View>
-          <View style={styles.iconData}>
-            <Image
-              source={ic_occupation_yellow}
-              resizeMode="cover"
-              style={styles.icons}
-            />
-            <Text style={styles.occupation}>{occupation}</Text>
-          </View>
+          <Text style={styles.name}>{messageTitle}</Text>
+          <Text style={styles.number}>{messageDescription}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -83,9 +62,10 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   number: {
-    fontSize: wp(3),
+    fontSize: wp(3.5),
     fontWeight: '400',
     color: '#333',
+    textAlign: 'justify',
   },
   occupation: {
     fontSize: wp(3),

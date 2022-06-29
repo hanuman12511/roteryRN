@@ -84,63 +84,65 @@ class ProfileScreen extends Component {
   }
 
   profileDataFetch = async () => {
-    const infoObj = this.props.navigation.getParam('studentInfo', null);
-    console.log(infoObj);
+    // const infoObj = this.props.navigation.getParam('studentInfo', null);
+    // console.log(infoObj);
     // Processing Student Profile Info
-    if (infoObj) {
-      await this.props.getStudentInfo();
-      const response = await this.props.isUserInfoGet;
-      if (this.state.connectionState === true) {
-        if (response?.success === 1) {
-          let data = null;
-          response?.students.map(item => {
-            data = item;
-          });
-          console.log('data', data);
 
-          this.titleArr = [
-            'Acadmic Year',
-            'Class',
-            'Section',
-            'Date of Birth',
-            'Gender',
-            'Scholar No.',
-            'Class Teacher',
-          ];
+    await this.props.getStudentInfo();
+    const response = await this.props.isUserInfoGet;
+    console.log(response);
+    if (this.state.connectionState === true) {
+      if (response?.success === 1) {
+        let data = null;
+        response?.students.map(item => {
+          data = item;
+        });
+        console.log('data', data);
 
-          let infoArr = [];
-          infoArr.push(data.acedamicyear);
-          infoArr.push(data.class);
-          infoArr.push(data.section);
-          infoArr.push(data.dob);
-          infoArr.push(data.gender);
-          infoArr.push(data.roll_no);
-          infoArr.push(data.teacher_name);
+        this.titleArr = [
+          'Acadmic Year',
+          'Class',
+          'Section',
+          'Date of Birth',
+          'Gender',
+          'Scholar No.',
+          'Class Teacher',
+        ];
 
-          // Other info
-          this.otherInfo = {
-            photo: this.getUserImage(data),
-            name: this.getUserFullName(data),
-            fatherName: data.fathername,
-            motherName: data.mothername,
-            mobile: data.mobile ? data.mobile : data.guardian_mobileno,
-            // email: data.email,
-            address: data.current_address
-              ? data.current_address
-              : 'Not Available',
-          };
+        let infoArr = [];
+        infoArr.push(data.acedamicyear);
+        infoArr.push(data.class);
+        infoArr.push(data.section);
+        infoArr.push(data.dob);
+        infoArr.push(data.gender);
+        infoArr.push(data.roll_no);
+        infoArr.push(data.teacher_name);
 
-          this.setState({infoArr, email: data.email, isLoading: false});
-        } else {
-          this.setState({isListRefreshing: false});
-        }
+        // Other info
+        this.otherInfo = {
+          photo: this.getUserImage(data),
+          name: this.getUserFullName(data),
+          fatherName: data.fathername,
+          motherName: data.mothername,
+          mobile: data.mobile ? data.mobile : data.guardian_mobileno,
+          // email: data.email,
+          address: data.current_address
+            ? data.current_address
+            : 'Not Available',
+        };
+
+        this.setState({infoArr, email: data.email, isLoading: false});
       } else {
-        this.setState({isLoading: false});
+        this.setState({isListRefreshing: false});
+        this.fetchTeacherInfo();
       }
     } else {
-      // Processing Teacher Profile Info
-      this.fetchTeacherInfo();
+      this.setState({isLoading: false});
     }
+    // } else {
+    //   // Processing Teacher Profile Info
+    //   this.fetchTeacherInfo();
+    // }
   };
 
   fetchTeacherInfo = async () => {

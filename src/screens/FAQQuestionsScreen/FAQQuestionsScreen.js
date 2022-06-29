@@ -73,7 +73,7 @@ class FAQQuestionsScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <Header
-          title="Faq Questions"
+          title="FAQ Questions"
           nav={this.props.navigation}
           //   showLocationPicker
           showNotificationIcon

@@ -1,24 +1,39 @@
-import {StyleSheet} from 'react-native';
+import {Image, Dimensions, StyleSheet, TouchableHighlight} from 'react-native';
+
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
+    backgroundColor: '#e7e7e7',
   },
-  attendanceTeacherStudent: {
-    flex: 1,
-  },
-  indicator: {
+  tabBarIndicatorStyle: {
     backgroundColor: 'white',
   },
-  tabBar: {
+
+  floatingSearchButton: {
+    position: 'absolute',
+    right: wp(4),
+    bottom: wp(4),
+    width: hp(8),
+    height: hp(8),
     backgroundColor: '#1ba2de',
+    borderRadius: hp(4),
+    borderWidth: 3,
+    borderColor: '#1ba2de80',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  floatingSearchIcon: {
+    height: hp(3),
+    aspectRatio: 1 / 1,
+  },
+
   tabBarIndicator: {
-    backgroundColor: '#fff',
+    backgroundColor: '#0286c0',
+    height: '100%',
   },
 
   tabBarStyle: {
@@ -28,6 +43,7 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     color: '#fff',
     fontSize: wp(3.5),
+    fontWeight: '700',
     textTransform: 'capitalize',
   },
   networkIssue: {
@@ -40,4 +56,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-export default styles;

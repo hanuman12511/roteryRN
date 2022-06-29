@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   Text,
   View,
   StyleSheet,
   Image,
+  TouchableHighlight,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
@@ -11,113 +12,71 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-const win = Dimensions.get('window');
+
 // Icons
-import ic_main_menu from 'assets/icons/ic_main_menu.png';
-import ic_search_white from 'assets/icons/ic_search_white.png';
+import ic_back from 'assets/icons/ic_back.png';
+import ic_menu from 'assets/icons/ic_main_menu.png';
 import logo from 'assets/images/rotary-logo.png';
+
 // User Preference
 import {getActiveSchool} from 'api/UserPreference';
 
-const ScreenHeader = props => {
-  let headerIcon = ic_main_menu;
-  props.backIcon && (headerIcon = props.backIcon);
+const Header = props => {
+  const {title, nav, navAction} = props;
 
   const toggleDrawer = () => {
     props.nav.openDrawer();
   };
 
-  const goBack = () => {
-    props.nav.pop();
+  const handleBack = () => {
+    nav.pop();
   };
 
-  let headerIconAction = toggleDrawer;
-  props.backIcon && (headerIconAction = goBack);
+  let handleNavAction = toggleDrawer;
+  let navIcon = ic_menu;
 
-  const onStudentListPress = () => {
-    props.nav.navigate('StudentList');
+  if (navAction === 'back') {
+    handleNavAction = handleBack;
+    navIcon = ic_back;
+  }
+
+  const handleQR = () => {
+    props.nav.navigate('QR Code');
   };
 
-  const onSearchPress = () => {
-    props.nav.push('AdminSearch');
+  const handleProfile = () => {
+    props.nav.navigate('Profile');
   };
 
   const onSchoolLogoPress = () => {
     props.nav.navigate('Home');
   };
 
-  const [schoolLogo, setSchoolLogo] = useState(null);
-
-  const getSchoolLogo = async () => {
-    try {
-      // fetching active school from local storage
-      const activeSchool = await getActiveSchool();
-      if (!activeSchool) {
-        return;
-      }
-
-      const {logo} = activeSchool;
-      setSchoolLogo(logo);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  useEffect(() => {
-    getSchoolLogo();
-  }, []);
-
   return (
     <View style={styles.screenHeaderBar}>
-      <TouchableOpacity onPress={headerIconAction} style={{flex: 1}}>
+      <TouchableHighlight underlayColor="transparent" onPress={handleNavAction}>
         <View style={styles.menuTitleContainer}>
           <Image
-            source={headerIcon}
+            source={navIcon}
             resizeMode="cover"
             style={styles.headerIcon}
           />
           <Text style={styles.dashBoardTopBarTitle}>{props.title}</Text>
         </View>
+      </TouchableHighlight>
+
+      <TouchableOpacity onPress={onSchoolLogoPress}>
+        <Image
+          source={logo}
+          resizeMode="cover"
+          style={styles.headerSchoolLogo}
+        />
       </TouchableOpacity>
-
-      {props.studentListIcon && (
-        <TouchableOpacity
-          onPress={onStudentListPress}
-          style={styles.studentListIcon}>
-          <Image
-            source={props.studentListIcon}
-            resizeMode="cover"
-            style={styles.headerStudentListIcon}
-          />
-        </TouchableOpacity>
-      )}
-
-      {props.showSearchIcon && (
-        <TouchableOpacity
-          onPress={onSearchPress}
-          style={styles.studentListIcon}>
-          <Image
-            source={ic_search_white}
-            resizeMode="cover"
-            style={styles.headerSearchIcon}
-          />
-        </TouchableOpacity>
-      )}
-
-      {props.showSchoolLogo && schoolLogo && (
-        <TouchableOpacity onPress={onSchoolLogoPress}>
-          <Image
-            source={logo}
-            resizeMode="cover"
-            style={styles.headerSchoolLogo}
-          />
-        </TouchableOpacity>
-      )}
     </View>
   );
 };
 
-export default ScreenHeader;
+export default Header;
 
 const styles = StyleSheet.create({
   screenHeaderBar: {

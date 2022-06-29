@@ -114,6 +114,10 @@ import EventsDetailScreen from './src/screens/EventsDetailScreen';
 // Clubs
 import ClubsScreen from './src/screens/ClubsScreen';
 import ClubsDetailScreen from './src/screens/ClubsDetailScreen';
+
+// DG Message
+import DGMessageScreen from './src/screens/DGMessageScreen';
+
 // Admin Leads
 import AdminLeadsScreen from './src/screens/AdminLeadsScreen';
 
@@ -192,6 +196,7 @@ import ic_dashboard_directory from './src/assets/icons/drawer_icons/ic_dashboard
 import ic_dashboard_events from './src/assets/icons/drawer_icons/ic_dashboard_events_black.png';
 import ic_dashboard_faq from './src/assets/icons/drawer_icons/ic_dashboard_faq_black.png';
 import ic_dashboard_members from './src/assets/icons/drawer_icons/ic_dashboard_members_black.png';
+import ic_dg_message from './src/assets/icons/drawer_icons/ic_dg_message.png';
 
 // User Preference
 import {
@@ -784,6 +789,17 @@ const ClubNavigator = createStackNavigator(
   },
 );
 
+const CommitteeNavigator = createStackNavigator(
+  {
+    Member: MemberList,
+    MemberDetail: MemberDetailScreen,
+  },
+  {
+    initialRouteName: 'Member',
+    headerMode: 'none',
+  },
+);
+
 const FaqNavigator = createStackNavigator(
   {
     FaqTab: FaqTabScreen,
@@ -803,14 +819,17 @@ const StudentDrawerNavigator = createDrawerNavigator(
       screen: DashBoardScreen,
       navigationOptions: setDrawerItemIcon(ic_home_black),
     },
-    'View Profile': {
-      screen: ProfileScreen,
-      navigationOptions: setDrawerItemIcon(ic_view_profile_black),
+    'DG Message': {
+      screen: DGMessageScreen,
+      navigationOptions: setDrawerItemIcon(ic_dg_message),
     },
-
-    'Member List': {
-      screen: MemberList,
+    Committee: {
+      screen: CommitteeNavigator,
       navigationOptions: setDrawerItemIcon(ic_dashboard_members),
+    },
+    Clubs: {
+      screen: ClubNavigator,
+      navigationOptions: setDrawerItemIcon(ic_dashboard_club),
     },
     Directory: {
       screen: DirectoryScreen,
@@ -820,35 +839,30 @@ const StudentDrawerNavigator = createDrawerNavigator(
       screen: EventNavigator,
       navigationOptions: setDrawerItemIcon(ic_dashboard_events),
     },
-    Clubs: {
-      screen: ClubNavigator,
-      navigationOptions: setDrawerItemIcon(ic_dashboard_club),
-    },
-
-    Calendar: {
-      screen: AdminCalendarScreen,
-      navigationOptions: setDrawerItemIcon(ic_calendar_black),
-    },
-
+    // Calendar: {
+    //   screen: AdminCalendarScreen,
+    //   navigationOptions: setDrawerItemIcon(ic_calendar_black),
+    // },
     'Photo Gallery': {
       screen: AdminPhotoGalleryNavigator,
       navigationOptions: setDrawerItemIcon(ic_gallery),
     },
-    Faq: {
+    FAQ: {
       screen: FaqNavigator,
       navigationOptions: setDrawerItemIcon(ic_dashboard_faq),
     },
-
-    Notification: {
+    Announcement: {
       screen: StudentNotificationDetailkNavigator,
       navigationOptions: setDrawerItemIcon(ic_notification),
     },
-
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: setDrawerItemIcon(ic_view_profile_black),
+    },
     'Change Password': {
       screen: StudentChangePasswordScreen,
       navigationOptions: setDrawerItemIcon(ic_change_password),
     },
-
     Logout: {
       screen: 'NoScreen',
       navigationOptions: setDrawerItemIcon(ic_logout_black),

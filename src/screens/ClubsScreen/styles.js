@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   listContentContainer: {
     padding: wp(3),
-    paddingTop: wp(1),
+    // paddingTop: wp(1),
   },
   searchContainer: {
     flexDirection: 'row',

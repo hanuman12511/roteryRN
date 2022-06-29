@@ -24,7 +24,7 @@ const StudentListItem = props => {
       // Dispatching action
       const setParamsAction = NavigationActions.setParams({
         params: {studentInfo: props.item},
-        key: 'View Profile',
+        key: 'Profile',
       });
       props.navigation.dispatch(setParamsAction);
 

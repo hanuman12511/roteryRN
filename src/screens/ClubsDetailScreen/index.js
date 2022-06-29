@@ -150,7 +150,7 @@ export default class index extends Component {
           </View>
         </View>
         <ScrollView>
-          <View style={styles.nameContainer}>
+          {/* <View style={styles.nameContainer}>
             <View style={styles.row}>
               <Image
                 source={memberImage}
@@ -185,8 +185,8 @@ export default class index extends Component {
                 <Text style={styles.designation}>(Secretary)</Text>
               </Text>
             </View>
-          </View>
-          <Text style={styles.memberTitle}>Members</Text>
+          </View> */}
+          <Text style={[styles.memberTitle, {marginTop: wp(3)}]}>Members</Text>
 
           <FlatList
             data={this.state.memberData}

@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 // Components
 import ScreenHeader from 'components/ScreenHeader';
-import MemberListComponent from 'components/MemberListComponent';
+import DGMessageListComponent from 'components/DGMessageListComponent';
 
 // Icons
 import ic_multi_student from 'assets/icons/ic_multi_student.png';
@@ -16,53 +16,21 @@ export default class index extends Component {
     this.state = {
       memberData: [
         {
-          memberName: 'Vikas Solanki',
-          designation: 'President',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
+          messageTitle: 'DG Message Title',
+          messageDescription:
+            'What is Lorem Ipsum in English? Lorem Ipsum, sometimes referred to as, is the placeholder text used in design when creating content. It helps designers plan out where the content will sit, without needing to wait for the content to be written and approved.',
         },
         {
-          memberName: 'Dheerendra Solanki',
-          designation: 'Treasurer',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
-        },
-        {
-          memberName: 'Dinesh Bijarniya',
-          designation: 'Secretary',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
-        },
-        {
-          memberName: 'Ajay Jangid',
-          designation: 'Member',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
-        },
-        {
-          memberName: 'Dheerendra Solanki',
-          designation: 'Treasurer',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
-        },
-        {
-          memberName: 'Dinesh Bijarniya',
-          designation: 'Secretary',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
-        },
-        {
-          memberName: 'Ajay Jangid',
-          designation: 'Member',
-          PhoneNo: '9876543210',
-          occupation: 'Businessman',
+          messageTitle: 'DG Message Title',
+          messageDescription:
+            'What is Lorem Ipsum in English? Lorem Ipsum, sometimes referred to as, is the placeholder text used in design when creating content. It helps designers plan out where the content will sit, without needing to wait for the content to be written and approved.',
         },
       ],
     };
   }
 
   renderItem = ({item}) => (
-    <MemberListComponent item={item} nav={this.props.navigation} />
+    <DGMessageListComponent item={item} nav={this.props.navigation} />
   );
 
   keyExtractor = (item, index) => index.toString();
@@ -76,7 +44,7 @@ export default class index extends Component {
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor="#02abe3" barStyle="light-content" />
         <ScreenHeader
-          title="Committee"
+          title="DG Message"
           studentListIcon={ic_multi_student}
           showSchoolLogo
           nav={navigation}

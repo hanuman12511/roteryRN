@@ -90,14 +90,14 @@ export default class index extends Component {
           showSchoolLogo
           nav={navigation}
         />
-        <View style={styles.calenderPicker}>
+        {/* <View style={styles.calenderPicker}>
           <Text style={styles.calenderText}>Search By Date</Text>
           <Image
             source={ic_event_time}
             resizeMode="cover"
             style={styles.calenderIcon}
           />
-        </View>
+        </View> */}
         <FlatList
           data={this.state.memberData}
           renderItem={this.renderItem}

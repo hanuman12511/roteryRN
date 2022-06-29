@@ -32,7 +32,7 @@ export default class ReferScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <Header
-          title="Faq Answear"
+          title="FAQ Answear"
           nav={this.props.navigation}
           //   showLocationPicker
           showNotificationIcon

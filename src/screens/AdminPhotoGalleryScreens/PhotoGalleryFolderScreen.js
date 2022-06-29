@@ -57,7 +57,7 @@ class PhotoGalleryFolderScreen extends Component {
   componentWillUnmount() {
     this.unsubscribe();
     // unsubscribing from didFocus listener
-    this.didFocusSubscription.remove();
+    // this.didFocusSubscription.remove();
   }
   fetchGalleryList = async () => {
     try {
@@ -116,9 +116,12 @@ class PhotoGalleryFolderScreen extends Component {
       console.log(error.message);
     }
   };
-  renderItem = ({item}) => (
-    <ImageGalleryFolderComponent item={item} nav={this.props.navigation} />
-  );
+  renderItem = ({item}) => {
+    console.log('navigation data', this.props.navigation);
+    return (
+      <ImageGalleryFolderComponent item={item} nav={this.props.navigation} />
+    );
+  };
 
   keyExtractor = (item, index) => index.toString();
 
@@ -192,14 +195,14 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: '#fff',
   },
   galleryContainer: {
     flex: 1,
   },
   listContentContainer: {
-    paddingVertical: wp(1),
-    paddingLeft: wp(1),
+    paddingVertical: wp(3),
+    paddingHorizontal: wp(1.5),
   },
   separator: {
     height: wp(1),

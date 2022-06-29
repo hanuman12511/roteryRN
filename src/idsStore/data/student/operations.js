@@ -19,14 +19,16 @@ import {getData, getActiveSchool, getActiveStudent} from 'api/UserPreference';
 // STUDENT_INFO
 export const getStudentInfo = () => async dispatch => {
   try {
+    console.log('get Member  Profile');
     // fetching active school from local storage
     const activeSchool = await getActiveSchool();
+    console.log('get Member  Profile', activeSchool);
     if (!activeSchool) {
       return;
     }
 
     const {userdetail: students, idsprimeID} = activeSchool;
-
+    console.log('hello');
     // processing for students id
     let studentIds = students.map(student => student.id);
     studentIds = studentIds.join();

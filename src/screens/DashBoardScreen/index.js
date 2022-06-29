@@ -35,6 +35,7 @@ import ic_multi_student from 'assets/icons/ic_multi_student.png';
 import ic_gatepass from 'assets/icons/ic_dashboard_faq.png';
 import ic_my_suggestion from 'assets/icons/ic_my_suggestion.png';
 import ic_view_profile from 'assets/icons/ic_view_profile.png';
+import ic_dashboard_profile_white from 'assets/icons/ic_dashboard_profile_white.png';
 
 import B1 from 'assets/images/B1.jpeg';
 import B2 from 'assets/images/B2.jpeg';
@@ -222,11 +223,26 @@ class DashBoardScreen extends Component {
             <View style={styles.tilesContainer}>
               <View style={styles.tilesRow}>
                 <Tile
+                  title="DG Message"
+                  color="#f2713a"
+                  image={ic_date_sheet}
+                  nav={navigation}
+                />
+                <Tile
+                  title="Committee"
+                  color="#c09960"
+                  image={ic_library}
+                  nav={navigation}
+                />
+                <Tile
                   title="Clubs"
                   color="#5366c7"
                   image={ic_attendance}
                   nav={navigation}
                 />
+              </View>
+
+              <View style={styles.tilesRow}>
                 <Tile
                   title="Directory"
                   color="#f17b91"
@@ -240,19 +256,19 @@ class DashBoardScreen extends Component {
                   image={ic_timetable}
                   nav={navigation}
                 />
-              </View>
-
-              <View style={styles.tilesRow}>
                 <Tile
                   title="Photo Gallery"
                   color="#dec03e"
                   image={ic_gallery}
                   nav={navigation}
                 />
+              </View>
+
+              <View style={styles.tilesRow}>
                 {/* shifted here from below row(to be removed) */}
                 {notificationCount !== 0 ? (
                   <Tile
-                    title="Notification"
+                    title="Announcement"
                     color="#33a375"
                     image={ic_notification_white}
                     nav={navigation}
@@ -261,7 +277,7 @@ class DashBoardScreen extends Component {
                   />
                 ) : (
                   <Tile
-                    title="Notification"
+                    title="Announcement"
                     color="#33a375"
                     image={ic_notification_white}
                     nav={navigation}
@@ -270,31 +286,15 @@ class DashBoardScreen extends Component {
                   />
                 )}
                 <Tile
-                  title="Member List"
-                  color="#c09960"
-                  image={ic_library}
-                  nav={navigation}
-                />
-              </View>
-
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Calendar"
-                  color="#eea023"
-                  image={ic_calendar}
-                  nav={navigation}
-                />
-
-                <Tile
-                  title="President Message"
-                  color="#f2713a"
-                  image={ic_date_sheet}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Faq"
-                  color="#33a375"
+                  title="FAQ"
+                  color="#ffa000"
                   image={ic_gatepass}
+                  nav={navigation}
+                />
+                <Tile
+                  title="Profile"
+                  color="#ff2f5d"
+                  image={ic_dashboard_profile_white}
                   nav={navigation}
                 />
               </View>
