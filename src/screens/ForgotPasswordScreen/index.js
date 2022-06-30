@@ -22,7 +22,7 @@ import ScreenHeader from 'components/ScreenHeader';
 import showToast from 'components/CustomToast';
 
 // Images
-import login_background_bg from 'assets/images/login_background_bg.png';
+import login_background_bg from 'assets/images/background.webp';
 
 // Icons
 import ic_back from 'assets/icons/ic_back.png';
@@ -39,14 +39,14 @@ export default class ForgotPasswordScreen extends Component {
     this.state = {
       isLoading: false,
       loginType: 'Student',
-      inputFieldPlaceholder: 'Student Mobile No.',
+      inputFieldPlaceholder: 'Enter Mobile No.',
       userId: '',
     };
 
     this.radio_props = [
-      {label: 'Student', value: 'Student'},
-      {label: 'Teacher', value: 'Teacher'},
-      {label: 'Admin', value: 'Admin'},
+      {label: 'Member', value: 'Student'},
+      {label: 'President', value: 'Teacher'},
+      {label: 'DG', value: 'Admin'},
     ];
   }
 
@@ -152,11 +152,11 @@ export default class ForgotPasswordScreen extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScreenHeader
+        {/* <ScreenHeader
           backIcon={ic_back}
           title="Forgot Password"
           nav={this.props.navigation}
-        />
+        /> */}
 
         <ImageBackground
           source={login_background_bg}

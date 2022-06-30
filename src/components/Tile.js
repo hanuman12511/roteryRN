@@ -19,8 +19,10 @@ const Tile = props => {
     height: '100%',
     width: '100%',
     elevation: 8,
+    borderRadius: 10,
+    overflow: 'hidden',
   };
-
+  // console.log('data props', props);
   return (
     <TouchableHighlight
       onPress={openScreen}
@@ -36,7 +38,7 @@ const Tile = props => {
         ) : (
           <Image
             style={styles.iconImage}
-            source={props.image}
+            source={{uri: props.image}}
             resizeMode="cover"
           />
         )}
@@ -64,7 +66,9 @@ const styles = StyleSheet.create({
   tileBox: {
     flex: 1,
     padding: wp(0.5),
-    elevation: 8,
+    // elevation: 8,
+    // borderRadius: 8,
+    // overflow: 'hidden',
   },
   title: {
     color: '#fff',

@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, FlatList, Dimensions} from 'react-native';
 import {styles} from './styles';
 import ImageSlider from 'react-native-image-slider';
 import {SafeAreaView} from 'react-native-safe-area-context';
-
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 // Components
 import Tile from 'components/Tile';
 import ScreenHeader from 'components/ScreenHeader';
@@ -36,7 +39,14 @@ import {connect} from 'react-redux';
 import {sliderOperations, sliderSelectors} from 'idsStore/data/slider';
 
 import remoteConfig from '@react-native-firebase/remote-config';
-import {KEYS, bannerSlider, getBannerSlider} from 'api/UserPreference';
+import {
+  bannerSlider,
+  getBannerSlider,
+  storeTilesData,
+  getTilesData,
+} from 'api/UserPreference';
+const window = Dimensions.get('window');
+const screen = Dimensions.get('screen');
 
 class DashBoardScreen extends Component {
   constructor(props) {
@@ -48,7 +58,6 @@ class DashBoardScreen extends Component {
 
       // appState: AppState.currentState,
     };
-    this.bannerSlider = '';
   }
 
   componentDidMount() {
@@ -57,7 +66,6 @@ class DashBoardScreen extends Component {
       this.setState({connectionState: state.isConnected});
     });
     this.getRemoteConfig();
-    this.fetchData();
   }
 
   componentWillUnmount() {
@@ -107,9 +115,20 @@ class DashBoardScreen extends Component {
         console.log('data activated');
         let confVal = await remoteConfig().getAll();
         // let confVal = remoteConfig().getValue('base_url').asString();
-        let banners = confVal.banners._value;
+        let tiles = confVal?.tileManager?._value;
+        let banners = confVal?.banners?._value;
+        let slider_data = JSON.parse(banners);
+        let sliderBanner = Object.values(slider_data?.slider_banners);
+        let tiles_Data = JSON.parse(tiles);
+        let tiles_data = Object.values(tiles_Data);
+        this.bannerSlider = sliderBanner;
+        this.tiles = tiles_data;
+        // console.log('data', this.bannerSlider, this.tiles);
         await bannerSlider(banners);
+        await storeTilesData(tiles_data);
+        await this.fetchData();
       } else {
+        await this.fetchData();
         Alert.alert('', 'not data activated');
       }
     } catch (err) {}
@@ -118,7 +137,14 @@ class DashBoardScreen extends Component {
   fetchData = async () => {
     try {
       const data = await getBannerSlider();
-      this.bannerSlider = JSON.parse(data);
+      const tiles_Data = await getTilesData();
+      let sliderData = JSON.parse(data);
+      this.bannerSlider = Object.values(sliderData?.slider_banners);
+      // let tiles_data = JSON.parse(tiles_Data);
+      // console.log('tiles_data', tiles_data);
+      this.tiles = tiles_Data;
+      this.tileStyle = this.tiles[0]?.length / 3;
+      // console.log('tiles', tiles_Data);
     } catch (error) {
       console.log('banner slider issues', error);
     }
@@ -180,15 +206,40 @@ class DashBoardScreen extends Component {
   //   }
   // };
 
+  renderItem = ({item}) => {
+    return (
+      item?.isVisible && (
+        <View style={styles.tilesContainer}>
+          <View
+            style={{
+              height: hp(67) / this.tileStyle,
+              justifyContent: 'space-between',
+            }}>
+            <Tile
+              title={item?.name}
+              color={item?.color}
+              image={item?.image}
+              nav={this.props.navigation}
+            />
+          </View>
+        </View>
+      )
+    );
+  };
+
+  keyExtractor = (item, index) => index.toString();
+
+  itemSeparator = () => <View style={styles.separator} />;
+
   render() {
     const {isLoading} = this.state;
     if (isLoading) {
       return <CustomLoader />;
     }
-    console.log(Object.values(this.bannerSlider.slider_banners));
     // Processing data
     const {sliderImages} = this.state;
     const {navigation} = this.props;
+    console.log();
     return (
       <SafeAreaView style={styles.container}>
         {this.state.connectionState && (
@@ -204,72 +255,21 @@ class DashBoardScreen extends Component {
                 loop
                 loopBothSides
                 autoPlayWithInterval={2000}
-                images={Object.values(this.bannerSlider.slider_banners)}
+                images={this.bannerSlider}
               />
             </View>
-            <View style={styles.tilesContainer}>
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="DG Message"
-                  color="#f2713a"
-                  image={ic_date_sheet}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Committee"
-                  color="#c09960"
-                  image={ic_library}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Clubs"
-                  color="#5366c7"
-                  image={ic_attendance}
-                  nav={navigation}
-                />
-              </View>
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="Directory"
-                  color="#f17b91"
-                  image={ic_assignment_white}
-                  nav={navigation}
-                />
 
-                <Tile
-                  title="Events"
-                  color="#982257"
-                  image={ic_timetable}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Photo Gallery"
-                  color="#dec03e"
-                  image={ic_gallery}
-                  nav={navigation}
-                />
-              </View>
-              <View style={styles.tilesRow}>
-                <Tile
-                  title="FAQ"
-                  color="#ffa000"
-                  image={ic_gatepass}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Profile"
-                  color="#ff2f5d"
-                  image={ic_dashboard_profile_white}
-                  nav={navigation}
-                />
-                <Tile
-                  title="Notification"
-                  color="#335120"
-                  image={ic_notice_board}
-                  nav={navigation}
-                />
-              </View>
-            </View>
+            {this.tiles?.map(data => (
+              <FlatList
+                data={data}
+                renderItem={this.renderItem}
+                keyExtractor={this.keyExtractor}
+                ItemSeparatorComponent={this.itemSeparator}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.listContentContainer}
+                numColumns={3}
+              />
+            ))}
           </>
         )}
         {this.state.connectionState === false ? (

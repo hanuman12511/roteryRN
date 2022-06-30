@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {Alert, Image, StyleSheet, ScrollView, View} from 'react-native';
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  ScrollView,
+  View,
+  Animated,
+} from 'react-native';
 import {createSwitchNavigator, createAppContainer} from 'react-navigation';
 
 import {createStackNavigator} from 'react-navigation-stack';
@@ -166,32 +173,40 @@ const onDrawerItemPress = props => async route => {
   );
 };
 
-const CustomDrawerContentComponent = props => (
-  <ScrollView>
-    <SafeAreaView
-      style={styles.drawerContentContainer}
-      forceInset={drawerContentContainerInset}>
-      <View
-        style={{
-          height: wp(25),
+const CustomDrawerContentComponent = props => {
+  // const translateX = Animated.interpolate(drawerOpenProgress, {
+  //   inputRange: [0, 1],
+  //   outputRange: [-100, 0],
+  // });
+  return (
+    <Animated.View>
+      <ScrollView>
+        <SafeAreaView
+          style={styles.drawerContentContainer}
+          forceInset={drawerContentContainerInset}>
+          <View
+            style={{
+              height: wp(25),
 
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={rotary_logo}
-          style={{height: wp(15), aspectRatio: 2.66 / 1}}
-        />
-      </View>
-      <DrawerItems
-        {...props}
-        onItemPress={onDrawerItemPress(props)}
-        activeTintColor="#1ba2de"
-        labelStyle={styles.drawerLabel}
-      />
-    </SafeAreaView>
-  </ScrollView>
-);
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Image
+              source={rotary_logo}
+              style={{height: wp(15), aspectRatio: 2.66 / 1}}
+            />
+          </View>
+          <DrawerItems
+            {...props}
+            onItemPress={onDrawerItemPress(props)}
+            activeTintColor="#1ba2de"
+            labelStyle={styles.drawerLabel}
+          />
+        </SafeAreaView>
+      </ScrollView>
+    </Animated.View>
+  );
+};
 
 const AddNoticeStackNavigator = createStackNavigator(
   {

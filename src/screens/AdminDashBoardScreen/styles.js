@@ -21,11 +21,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 0,
     backgroundColor: '#fff',
   },
-  tilesRow: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+  tilesRow: {},
   networkIssue: {
     height: hp(50),
     aspectRatio: 1 / 1,
