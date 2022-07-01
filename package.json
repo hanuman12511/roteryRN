@@ -25,7 +25,6 @@
         "axios": "^0.27.2",
         "react": "17.0.2",
         "react-native": "0.66.4",
-        "react-native-calendars": "^1.1284.0",
         "react-native-camera": "^4.2.1",
         "react-native-check-box": "^2.1.7",
         "react-native-clear-cache-lcm": "^1.0.1",
@@ -67,9 +66,9 @@
     },
     "devDependencies": {
         "@babel/core": "^7.18.5",
+        "@babel/eslint-parser": "^7.5.4",
         "@babel/runtime": "^7.18.3",
         "@react-native-community/eslint-config": "^3.0.2",
-        "@babel/eslint-parser": "^7.5.4",
         "babel-jest": "^28.1.1",
         "eslint": "^8.18.0",
         "jest": "^28.1.1",
