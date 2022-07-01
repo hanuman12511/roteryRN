@@ -9,6 +9,7 @@ const KEYS = {
   DESIGNATION: 'designation',
   BANNER_SLIDER: 'banners',
   TILES_DATA: 'tiles_data',
+  FAQ: 'faq_data',
 };
 
 export const storeData = async data => {
@@ -59,6 +60,29 @@ export const storeTilesData = async data => {
 export const getTilesData = async () => {
   try {
     const rawData = await AsyncStorage.getItem(KEYS.TILES_DATA);
+    if (!rawData) {
+      return null;
+    }
+    const info = JSON.parse(rawData);
+    return info;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+// faq data
+export const storeFaqData = async data => {
+  try {
+    const info = JSON.stringify(data);
+    await AsyncStorage.setItem(KEYS.FAQ, info);
+  } catch (error) {
+    console.log('Faild to store data for Tiles', error);
+  }
+};
+
+export const getFaqData = async () => {
+  try {
+    const rawData = await AsyncStorage.getItem(KEYS.FAQ);
     if (!rawData) {
       return null;
     }

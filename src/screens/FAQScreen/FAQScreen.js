@@ -13,21 +13,29 @@ import Faq from 'components/FaqTIleComponent';
 
 import {connect} from 'react-redux';
 import {faqOperations, faqSelectors} from 'idsStore/data/faq';
+import {getFaqData} from 'api/UserPreference';
 
 class FAQScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       categories: '',
-      isProcessing: true,
+      isProcessing: false,
       message: '',
       isListRefreshing: false,
     };
+    this.faqData = [];
   }
 
   componentDidMount() {
-    this.handleFaqData();
+    // this.handleFaqData();
+    this.getingFAQ_Data();
   }
+
+  getingFAQ_Data = async () => {
+    let faq = await getFaqData();
+    faq.map(item => this.setState({categories: item}));
+  };
 
   handleFaqData = async () => {
     const params = null;

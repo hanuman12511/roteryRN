@@ -15,7 +15,7 @@ class FaqTIleComponent extends Component {
   }
 
   handleQuestions = () => {
-    const answer = this.props.item.answer;
+    const answer = this.props.item.Answer;
     this.props.nav.navigate('FAQ Answer', {answer});
   };
 
@@ -23,7 +23,7 @@ class FaqTIleComponent extends Component {
     return (
       <TouchableOpacity style={styles.tile} onPress={this.handleQuestions}>
         <Image source={ic_faq} resizeMode="cover" style={styles.tileIcon} />
-        <Text style={styles.title}>{this.props.item.question}</Text>
+        <Text style={styles.title}>{this.props.item.Question}</Text>
       </TouchableOpacity>
     );
   }

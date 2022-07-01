@@ -4,7 +4,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import configureStore from './src/idsStore/store';
+import configureStoreData from './src/idsStore/store';
 import {AppRegistry} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
@@ -39,7 +39,7 @@ messaging()
   });
 
 // config
-const {store, persister} = configureStore();
+const {store, persister} = configureStoreData();
 const Root = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persister}>

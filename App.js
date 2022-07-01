@@ -101,6 +101,8 @@ import {
   getTeacherDesignation,
 } from './src/api/UserPreference';
 
+import {getRemoteConfig} from 'firebase_api/remoteConfig';
+
 // Style Sheet
 const styles = StyleSheet.create({
   drawerItemIcon: {
@@ -402,6 +404,10 @@ const AdminDrawerNavigator = createDrawerNavigator(
       screen: AdminPhotoGalleryNavigator,
       navigationOptions: setDrawerItemIcon(ic_gallery),
     },
+    FAQ: {
+      screen: FaqNavigator,
+      navigationOptions: setDrawerItemIcon(ic_gallery),
+    },
 
     'Change Password': {
       screen: TeacherChangePasswordScreen,
@@ -555,6 +561,7 @@ export default class App extends Component {
   componentDidMount() {
     // Initial setup
     setTimeout(this.initialSetup, 2000);
+
     // Adding firebase listeners
     createOnTokenRefreshListener(this);
     createNotificationListeners(this);
@@ -568,6 +575,8 @@ export default class App extends Component {
 
   initialSetup = async () => {
     try {
+      await getRemoteConfig();
+
       // Fetching roleId
       const roleId = await getRoleId();
       checkPermission(this);

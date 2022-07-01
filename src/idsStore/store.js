@@ -9,7 +9,7 @@ const rootReducer = combineReducers(reducers);
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['userInfo'],
+  whitelist: ['userInfo', 'banners', 'tiles', 'faq'],
   stateReconciler: autoMergeLevel2,
   timeout: null,
 };

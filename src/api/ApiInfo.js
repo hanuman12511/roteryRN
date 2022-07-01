@@ -1,6 +1,5 @@
 //axios for api calling
 import axios from 'axios';
-
 // Utility
 import {encryptData} from './EncryptionUtility';
 
@@ -155,88 +154,3 @@ export const makeRequest = async (
     return null;
   }
 };
-
-// // Methods
-// export const makeRequest = async (
-//   url,
-//   params = null,
-//   sendAuthorizationToken = true,
-//   isContentTypeJSON = true,
-// ) => {
-//   try {
-//     // request info
-//     let info = {};
-
-//     if (params) {
-//       // request method
-//       info.method = 'POST';
-
-//       // request headers
-//       info.headers = {
-//         'Content-Type': 'application/json',
-//       };
-
-//       if (sendAuthorizationToken) {
-//         // fetching userInfo
-//         const userInfo = await getData();
-//         if (!userInfo) {
-//           console.log('Unable to fetch user info');
-//           return null;
-//         }
-
-//         const {authToken} = userInfo;
-
-//         info.headers = {
-//           ...info.headers,
-//           Authorization: 'Bearer ' + authToken,
-//         };
-//       }
-
-//       // request body
-//       console.log('Request params:', params);
-
-//       if (isContentTypeJSON) {
-//         const data = JSON.stringify(params);
-//         const payload = await encryptData(data);
-//         const requestBody = {payload};
-//         info.body = JSON.stringify(requestBody);
-//       } else {
-//         // preparing multipart/form-data
-//         const formData = new FormData();
-//         for (const key in params) {
-//           formData.append(key, params[key]);
-//         }
-//         info.body = formData;
-//       }
-//     } else {
-//       // headers to prevent cache in GET request
-//       info.headers = {
-//         'Cache-Control': 'no-cache, no-store, must-revalidate',
-//         Pragma: 'no-cache',
-//         Expires: 0,
-//       };
-//     }
-
-//     console.log('Request URL:', url);
-//     console.log('Request Info:', info);
-
-//     const response = await fetch(url, info);
-//     console.log('Request Response:', response);
-
-//     const result = await response.json();
-//     console.log('Request Result:', result);
-
-//     // processing result for auth token expiry
-//     // if (result) {
-//     //   const {success} = result;
-
-//     //   if (success === 3) {
-//     //   }
-//     // }
-
-//     return result;
-//   } catch (error) {
-//     console.log(error.message);
-//     return null;
-//   }
-// };

@@ -28,26 +28,34 @@ class FAQQuestionsScreen extends Component {
   }
 
   handleGetQuestions = async () => {
-    const id = this.props.navigation.getParam('id');
-    const params = {categoryId: id};
-    await this.props.faqQuestion(params).then(() => {
-      const {success, message} = this.props.isFaqQuestion;
-      if (success) {
-        const {questions} = this.props.isFaqQuestion;
-        this.setState({
-          questions,
-          isProcessing: false,
-          isListRefreshing: false,
-        });
-      } else {
-        this.setState({
-          questions: '',
-          message,
-          isProcessing: false,
-          isListRefreshing: false,
-        });
-      }
+    const id = this.props.navigation.getParam('data');
+
+    this.setState({
+      questions: id.questions,
+      isProcessing: false,
+      isListRefreshing: false,
     });
+
+    // console.log(id);
+    // const params = {categoryId: id};
+    // await this.props.faqQuestion(params).then(() => {
+    //   const {success, message} = this.props.isFaqQuestion;
+    //   if (success) {
+    //     const {questions} = this.props.isFaqQuestion;
+    //     this.setState({
+    //       questions,
+    //       isProcessing: false,
+    //       isListRefreshing: false,
+    //     });
+    //   } else {
+    //     this.setState({
+    //       questions: '',
+    //       message,
+    //       isProcessing: false,
+    //       isListRefreshing: false,
+    //     });
+    //   }
+    // });
   };
 
   handleListRefresh = async () => {

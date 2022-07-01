@@ -13,7 +13,7 @@ class FaqTIleComponent extends Component {
 
   handleQuestions = () => {
     const id = this.props.item.id;
-    this.props.nav.navigate('FAQ Questions', {id});
+    this.props.nav.navigate('FAQ Questions', {id, data: this.props.item});
   };
 
   render() {

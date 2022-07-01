@@ -38,9 +38,9 @@ export default class ReferScreen extends Component {
           showNotificationIcon
           showCartIcon
         />
-        <View style={{flex: 1}}>
-          <WebView source={{html: `${answer}`}} />
-        </View>
+        <ScrollView>
+          <Text>{answer}</Text>
+        </ScrollView>
       </SafeAreaView>
     );
   }
