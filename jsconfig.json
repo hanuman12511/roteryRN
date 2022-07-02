@@ -10,7 +10,6 @@
           "screens/*": ["screens/*"],
           "validations/*": ["validations/*"],
           "idsStore/*": ["idsStore/*"],
-
         }
       },
       "include": ["index.js", "App.js", "src/**/*"]
