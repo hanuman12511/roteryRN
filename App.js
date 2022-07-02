@@ -51,7 +51,8 @@ import StudentListScreen from './src/screens/StudentListScreen';
 import SchoolListScreen from './src/screens/SchoolListScreen';
 import SplashScreen from './src/screens/SplashScreen';
 import UpdateTeacherPhoto from './src/screens/ProfileScreen/updateTeacherPhoto';
-
+//news screen
+import NewsScreen from 'screens/NewsScreen';
 // FAQ Screen
 import FaqTabScreen from 'screens/FaqTabScreen';
 import FAQScreen from 'screens/FAQScreen/FAQScreen';
@@ -303,6 +304,16 @@ const CommitteeNavigator = createStackNavigator(
   },
 );
 
+const NewsNavigator = createStackNavigator(
+  {
+    News: NewsScreen,
+  },
+  {
+    initialRouteName: 'News',
+    headerMode: 'none',
+  },
+);
+
 const FaqNavigator = createStackNavigator(
   {
     FaqTab: FaqTabScreen,
@@ -404,6 +415,12 @@ const AdminDrawerNavigator = createDrawerNavigator(
       screen: AdminPhotoGalleryNavigator,
       navigationOptions: setDrawerItemIcon(ic_gallery),
     },
+
+    News: {
+      screen: NewsNavigator,
+      navigationOptions: setDrawerItemIcon(ic_gallery),
+    },
+
     FAQ: {
       screen: FaqNavigator,
       navigationOptions: setDrawerItemIcon(ic_gallery),
