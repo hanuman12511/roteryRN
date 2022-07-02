@@ -10,6 +10,7 @@ const KEYS = {
   BANNER_SLIDER: 'banners',
   TILES_DATA: 'tiles_data',
   FAQ: 'faq_data',
+  DG_MESSAGE: 'dg_message_data',
 };
 
 export const storeData = async data => {
@@ -83,6 +84,29 @@ export const storeFaqData = async data => {
 export const getFaqData = async () => {
   try {
     const rawData = await AsyncStorage.getItem(KEYS.FAQ);
+    if (!rawData) {
+      return null;
+    }
+    const info = JSON.parse(rawData);
+    return info;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+// DG Message Data data
+export const storeDGMessageData = async data => {
+  try {
+    const info = JSON.stringify(data);
+    await AsyncStorage.setItem(KEYS.DG_MESSAGE, info);
+  } catch (error) {
+    console.log('Faild to store data for Tiles', error);
+  }
+};
+
+export const getDGMessageData = async () => {
+  try {
+    const rawData = await AsyncStorage.getItem(KEYS.DG_MESSAGE);
     if (!rawData) {
       return null;
     }

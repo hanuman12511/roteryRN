@@ -10,24 +10,31 @@ import DGMessageListComponent from 'components/DGMessageListComponent';
 // Icons
 import ic_multi_student from 'assets/icons/ic_multi_student.png';
 
+import {getDGMessageData} from 'api/UserPreference';
+
 export default class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      memberData: [
-        {
-          messageTitle: 'DG Message Title',
-          messageDescription:
-            'What is Lorem Ipsum in English? Lorem Ipsum, sometimes referred to as, is the placeholder text used in design when creating content. It helps designers plan out where the content will sit, without needing to wait for the content to be written and approved.',
-        },
-        {
-          messageTitle: 'DG Message Title',
-          messageDescription:
-            'What is Lorem Ipsum in English? Lorem Ipsum, sometimes referred to as, is the placeholder text used in design when creating content. It helps designers plan out where the content will sit, without needing to wait for the content to be written and approved.',
-        },
-      ],
+      memberData: [],
     };
   }
+
+  componentDidMount() {
+    this.getingDG_Message();
+  }
+
+  getingDG_Message = async () => {
+    try {
+      const getData = await getDGMessageData();
+      console.log(getData);
+      getData.map(data => {
+        this.setState({memberData: data});
+      });
+    } catch (error) {
+      console.log('error message', error);
+    }
+  };
 
   renderItem = ({item}) => (
     <DGMessageListComponent item={item} nav={this.props.navigation} />

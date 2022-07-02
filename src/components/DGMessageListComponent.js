@@ -5,9 +5,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-// Images
-import memberImage from '../assets/images/memberImage.jpg';
-
 // Icons
 import ic_phone_yellow from '../assets/icons/ic_phone_yellow.png';
 import ic_occupation_yellow from '../assets/icons/ic_occupation_yellow.png';
@@ -17,13 +14,27 @@ export default class DGMessageListComponent extends Component {
   //     this.props.nav.navigate('MemberDetail');
   //   };
   render() {
-    const {messageTitle, messageDescription} = this.props.item;
+    const {
+      messageTitle,
+      messageDescription,
+      image,
+      name,
+      qualification,
+    } = this.props.item;
     return (
       <TouchableOpacity
         style={styles.tileContainer}
         // onPress={this.onEventItemClick}
       >
         <View style={styles.memberDetail}>
+          <View style={styles.upperContainer}>
+            <Image source={{uri: image}} style={styles.imgContainer} />
+            <View style={styles.nameContainer}>
+              <Text style={styles.name}> {name}</Text>
+              <Text style={styles.occupation}> {qualification}</Text>
+            </View>
+          </View>
+
           <Text style={styles.name}>{messageTitle}</Text>
           <Text style={styles.number}>{messageDescription}</Text>
         </View>
@@ -42,11 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  memberImage: {
-    width: wp(17),
-    aspectRatio: 1 / 1,
-    borderRadius: wp(1),
-  },
+
   memberDetail: {
     flex: 1,
     paddingHorizontal: wp(3),
@@ -55,6 +62,11 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
     fontWeight: '700',
     color: '#333',
+  },
+  nameContainer: {
+    marginLeft: wp(2),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   designation: {
     fontSize: wp(3),
@@ -81,5 +93,13 @@ const styles = StyleSheet.create({
     aspectRatio: 1 / 1,
     borderRadius: wp(1),
     marginRight: wp(2),
+  },
+  imgContainer: {
+    height: hp(15),
+    aspectRatio: 1 / 1,
+    borderRadius: 8,
+  },
+  upperContainer: {
+    flexDirection: 'row',
   },
 });
