@@ -20,15 +20,15 @@ export default class ReferScreen extends Component {
     };
   }
 
-  listItem = ({item}) => <FaqAns item={item} nav={this.props.navigation} />;
+  // listItem = ({item}) => <FaqAns item={item} nav={this.props.navigation} />;
 
-  keyExtractor = (item, index) => index.toString();
+  // keyExtractor = (item, index) => index.toString();
 
-  itemSeparator = () => <View style={styles.separator} />;
+  // itemSeparator = () => <View style={styles.separator} />;
 
   render() {
     const answer = this.props.navigation.getParam('answer');
-
+    console.log(answer);
     return (
       <SafeAreaView style={styles.container}>
         <Header

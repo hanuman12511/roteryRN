@@ -305,13 +305,12 @@ const CommitteeNavigator = createStackNavigator(
 
 const FaqNavigator = createStackNavigator(
   {
-    FaqTab: FaqTabScreen,
     FAQ: FAQScreen,
     'FAQ Questions': FAQQuestionsScreen,
     'FAQ Answer': FAQAnsScreen,
   },
   {
-    initialRouteName: 'FaqTab',
+    initialRouteName: 'FAQ',
     headerMode: 'none',
   },
 );

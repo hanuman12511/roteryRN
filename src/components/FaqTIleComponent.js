@@ -19,11 +19,11 @@ class FaqTIleComponent extends Component {
   render() {
     return (
       <TouchableOpacity style={styles.tile} onPress={this.handleQuestions}>
-        {/* <Image
+        <Image
           source={{uri: this.props.item.image}}
           resizeMode="cover"
           style={styles.tileIcon}
-        /> */}
+        />
         <Text style={styles.title}>{this.props.item.name}</Text>
       </TouchableOpacity>
     );
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     margin: wp(1.5),
     paddingVertical: wp(3),
     paddingHorizontal: wp(3),
-    // alignItems: 'center',
+    alignItems: 'center',
     shadowColor: '#0006',
     shadowRadius: 10,
     shadowOpacity: 0.6,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
   },
   tileIcon: {
-    height: wp(8),
+    height: wp(12),
     aspectRatio: 1 / 1,
   },
   title: {
