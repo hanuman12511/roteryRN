@@ -17,7 +17,7 @@ export default class NewsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffbe',
+    backgroundColor: '#fff',
   },
   textd: {},
 });
