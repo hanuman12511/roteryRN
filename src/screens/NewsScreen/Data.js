@@ -1,5 +1,5 @@
 //news Data
-export const data1 = [
+export const datajson = [
   {
     id: 1,
     title: 'Conference highlights Rotary’s ',
