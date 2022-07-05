@@ -17,12 +17,14 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import DocumentPicker from 'react-native-document-picker';
-// icon
-import gallery from 'assets/icons/gallery.png';
 // firebase
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/firestore';
-import RNFetchBlob from 'rn-fetch-blob';
+
+// Picker model
+import ic_down_black from 'assets/icons/ic_down_black.png';
+import PickerModal from 'react-native-picker-modal-view';
+
 class AddTemplatePopup extends PureComponent {
   constructor(props) {
     super(props);
@@ -36,6 +38,12 @@ class AddTemplatePopup extends PureComponent {
       question: '',
       answear: '',
       uploadImage: '',
+      ticketType: '',
+      selectedTicketType: {
+        Id: 1,
+        Name: 'Select Categories Type',
+        Value: 'Select Categories Type',
+      },
     };
 
     this.parentView = null;
@@ -65,43 +73,7 @@ class AddTemplatePopup extends PureComponent {
   handleAsnwearChange = a => {
     this.setState({answear: a});
   };
-  // title Image
-  getImage = async () => {
-    try {
-      // Pick a single file
-      const response = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
 
-      const {name} = response;
-      const extension = name.split('.').pop();
-      const isFileAllowed =
-        extension === 'jpeg' || extension === 'jpg' || extension === 'png';
-
-      if (isFileAllowed) {
-        const fs = RNFetchBlob.fs;
-        const filePath =
-          Platform.OS === 'android'
-            ? response.uri
-            : response.uri.replace('file://', '');
-        const file = await fs.readFile(filePath, 'base64');
-
-        this.setState({
-          selectedFile: response,
-          uploadImage: `data:image/${extension};base64,${file}`,
-          showImage: response.uri,
-          imageName: name,
-        });
-        console.log(this.state.selectedFile, this.state.imageName);
-      } else {
-        alert(`.${extension} file not allowed`);
-      }
-    } catch (error) {
-      if (!DocumentPicker.isCancel(error)) {
-        console.log(error);
-      }
-    }
-  };
   // add Question
   addQuestion = async () => {
     try {
@@ -134,6 +106,7 @@ class AddTemplatePopup extends PureComponent {
   };
   addFAQ_Data = async () => {
     try {
+      const {selectedTicketType} = this.state;
       if (this.state.questionData.length === 0) {
         Alert.alert('', 'Please Enter the Question and Answear');
       }
@@ -141,7 +114,7 @@ class AddTemplatePopup extends PureComponent {
       await firebase
         .firestore()
         .collection('faq')
-        .doc('Media')
+        .doc(`${selectedTicketType.Name}`)
         .update({
           questions: this.state.questionData,
         })
@@ -156,10 +129,61 @@ class AddTemplatePopup extends PureComponent {
     }
   };
 
+  // ticketType
+  handleSelectCategory = (selectedTicketType, index) => {
+    this.setState({selectedTicketType});
+    return selectedTicketType;
+  };
+
+  handleSelectCategoryClose = () => {
+    const {selectedTicketType} = this.state;
+    this.setState({selectedTicketType});
+  };
+
+  renderSelectCategoryPicker = (disabled, selected, showModal) => {
+    const {selectedTicketType} = this.state;
+    const {Name} = selectedTicketType;
+
+    const labelStyle = {
+      flex: 1,
+      fontSize: wp(3),
+      color: '#333',
+    };
+
+    if (Name === 'Select Ticket Type') {
+      labelStyle.color = '#999';
+    }
+
+    const handlePress = disabled ? null : showModal;
+
+    return (
+      <TouchableOpacity underlayColor="transparent" onPress={handlePress}>
+        <View style={styles.pickerSelectView}>
+          <Text style={labelStyle}>{Name}</Text>
+          <Image
+            source={ic_down_black}
+            resizeMode="cover"
+            style={styles.pickerSelectViewIcon}
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   render() {
     if (this.state.isLoading) {
       return <CustomLoader />;
     }
+
+    let data = [];
+    this.props.categories.map((d, i) => {
+      data.push({
+        Name: d.name,
+        Value: d.name,
+        Id: i + 1,
+      });
+    });
+    console.log('data categories', data);
     return (
       <View
         ref={this.setViewRef}
@@ -167,16 +191,20 @@ class AddTemplatePopup extends PureComponent {
         style={styles.modalContainer}>
         <View style={styles.popupContainer}>
           <Text style={styles.heading}>Add New FAQ</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Title"
-            placeholderTextColor="#666"
-            maxLength={100}
-            multiline
-            value={this.state.titleName}
-            onChangeText={this.handleTitleChange}
-          />
+          <View style={[styles.pickerContainer, styles.input]}>
+            <PickerModal
+              items={data}
+              selected={this.state.selectedTicketType}
+              onSelected={this.handleSelectCategory.bind(this)}
+              onClosed={this.handleSelectCategoryClose.bind(this)}
+              showToTopButton={true}
+              showAlphabeticalIndex={true}
+              // autoGenerateAlphabeticalIndex={true}
+              searchPlaceholderText="Search"
+              renderSelectView={this.renderSelectCategoryPicker.bind(this)}
+              style={styles.pickerInput}
+            />
+          </View>
           <TextInput
             style={styles.input}
             placeholder="Question"
@@ -363,6 +391,30 @@ const styles = StyleSheet.create({
   imgButton: {
     height: wp(10),
     aspectRatio: 1 / 1,
+  },
+  pickerInput: {
+    flex: 1,
+  },
+  pickerSelectView: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    width: wp(70),
+    // width: '100%',
+  },
+  pickerSelectViewIcon: {
+    width: wp(4),
+    height: wp(4),
+  },
+  pickerImageTitle: {
+    flexDirection: 'row',
+    // marginTop: 15,
+  },
+  pickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: hp(5),
+    paddingHorizontal: wp(2),
   },
 });
 
