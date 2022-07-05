@@ -29,9 +29,9 @@ class FAQQuestionsScreen extends Component {
 
   handleGetQuestions = async () => {
     const id = this.props.navigation.getParam('data');
-    console.log('data', id);
+    console.log('data ==', id);
     this.setState({
-      questions: id.question,
+      questions: id.questions,
       isProcessing: false,
       isListRefreshing: false,
     });

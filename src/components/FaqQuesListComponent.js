@@ -21,6 +21,7 @@ class FaqTIleComponent extends Component {
   };
 
   render() {
+    console.log('question data', this.props.item);
     return (
       <TouchableOpacity style={styles.tile} onPress={this.handleQuestions}>
         <Image source={ic_faq} resizeMode="cover" style={styles.tileIcon} />
