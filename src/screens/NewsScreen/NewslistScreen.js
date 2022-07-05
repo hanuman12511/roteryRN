@@ -29,12 +29,14 @@ export default class NewslistScreen extends Component {
       dateto: '',
       datefrom: '',
       isVisible: false,
+      isVisiblef: false,
       model: false,
       title: '',
       clubname: '',
       newsdate: '',
       imageup: '',
       isListRefreshing: false,
+      imagepath: '',
     };
 
     this.arrayholder = [];
@@ -108,6 +110,8 @@ export default class NewslistScreen extends Component {
     });
     // alert('dateto', dateto);
     // this.arrayholder = newData;
+
+    console.log('setdateto', newData);
   }
 
   renderItemshow(props) {
@@ -123,7 +127,7 @@ export default class NewslistScreen extends Component {
             <Text style={styles.clubname}>{props.item.clubname}</Text>
 
             <Text style={styles.date}>
-              <Icon name="calendar" size={15} color="#525E75" />
+              <Icon name="calendar" size={15} color="#e97147" />
               {'  '}
               {props.item.newsdate}
             </Text>
@@ -150,7 +154,7 @@ export default class NewslistScreen extends Component {
   };
 
   handleConfirm = date => {
-    console.warn('A date has been picked: ', date);
+    // console.warn('A date has been picked: ', date);
     const options = {
       year: 'numeric',
       day: 'numeric',
@@ -159,7 +163,7 @@ export default class NewslistScreen extends Component {
 
     const date1 = date.toLocaleDateString('en-US', options);
     this.setState({dateto: date1});
-    this.searchDate(date1);
+    //this.searchDate(date1);
     this.hideDatePicker();
   };
 
@@ -186,23 +190,55 @@ export default class NewslistScreen extends Component {
     const date1 = date.toLocaleDateString('en-US', options);
     this.setState({newsdate: date1});
     //this.searchData1(date1);
-    this.hideDatePicker();
+    this.hideDatePicker1();
   };
 
   //*************   from date */
-  SelectDateend = () => {
+
+  searchDatefrom = text => {
+    const Datefrom = new Date(text);
+    const Dateto = new Date(this.state.dateto);
+
+    console.log('to=', this.state.dateto);
+
+    console.log('from', this.state.datefrom);
+
+    /* const newData = this.arrayholder.filter(item => {
+      const itemData = item.newsdate;
+
+      return itemData >= Dateto;
+
+      //return itemData.indexOf(textData > Datefrom) > -1;
+    }); */
+
+    var newData = this.arrayholder.filter(function(a) {
+      return new Date(a.newsdate) >= Dateto && new Date(a.newsdate) <= Datefrom;
+    });
+    console.log(newData);
+
     this.setState({
-      isVisible: true,
+      data: newData,
+      datefrom: text,
+    });
+    // alert('dateto', dateto);
+    // this.arrayholder = newData;
+    console.log('data=', newData);
+  };
+
+  SelectDatefrom = () => {
+    this.setState({
+      isVisiblef: true,
     });
   };
   hideDatePickerend = () => {
     this.setState({
-      isVisible: false,
+      isVisiblef: false,
     });
   };
 
   handleConfirmend = date => {
     //console.warn('A date has been picked: ', date);
+
     const options = {
       year: 'numeric',
       day: 'numeric',
@@ -210,9 +246,9 @@ export default class NewslistScreen extends Component {
     };
 
     const date1 = date.toLocaleDateString('en-US', options);
-    this.setState({newsdate: date1});
-    //this.searchData1(date1);
-    this.hideDatePicker();
+    this.setState({datefrom: date1});
+    this.searchDatefrom(date1);
+    this.hideDatePickerend();
   };
 
   AddNews = () => {
@@ -260,13 +296,16 @@ export default class NewslistScreen extends Component {
     };
 
     ImagePicker.showImagePicker(option, response => {
+      console.log('image show', response);
+      this.setState({
+        imagepath: response.fileName,
+      });
       if (response.didCancel) {
         console.log('User cancel image picker');
       } else if (response.error) {
         console.log(' image picker error', response.error);
       } else {
         // Base 64
-        alert(response.data);
 
         let source = 'data:image/jpeg;base64,' + response.data;
         this.setState({
@@ -289,6 +328,11 @@ export default class NewslistScreen extends Component {
       console.log(error.message);
     }
   };
+  CloseMode = () => {
+    this.setState({
+      model: false,
+    });
+  };
 
   render() {
     return (
@@ -305,10 +349,12 @@ export default class NewslistScreen extends Component {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: '#9f9f7d',
-              marginLeft: 10,
+              backgroundColor: '#e97147',
               marginRight: 10,
               marginTop: 5,
+
+              width: '92%',
+              borderRadius: 10,
             }}>
             <DateTimePicker
               isVisible={this.state.isVisible}
@@ -316,7 +362,7 @@ export default class NewslistScreen extends Component {
               onConfirm={this.handleConfirm}
               onCancel={this.hideDatePicker}
             />
-            <Text style={styles.datetotext}>Date To:</Text>
+            <Text style={styles.datetotext}> Date To : </Text>
 
             <TouchableOpacity onPress={this.SelectDateto}>
               <Icon
@@ -336,18 +382,20 @@ export default class NewslistScreen extends Component {
               }
             />
           </View>
-          {/* 
+
           <View
             style={{
+              width: '89%',
+              borderRadius: 10,
               flexDirection: 'row',
               alignItems: 'center',
-              backgroundColor: '#9f9f7d',
-              marginLeft: 10,
+              backgroundColor: '#e97147',
+              marginLeft: -6,
               marginRight: 10,
               marginTop: 5,
             }}>
             <DateTimePicker
-              isVisible={this.state.isVisible}
+              isVisible={this.state.isVisiblef}
               mode="date"
               onConfirm={this.handleConfirmend}
               onCancel={this.hideDatePickerend}
@@ -364,15 +412,16 @@ export default class NewslistScreen extends Component {
             </TouchableOpacity>
             <TextInput
               style={styles.textInput}
-              onChangeText={text => this.searchDateEnd(text)}
+              onChangeText={text => this.searchDatefrom(text)}
               value={this.state.datefrom}
               underlineColorAndroid="transparent"
               placeholder={
-                this.state.dateto != '' ? this.state.dateto : 'Search From Date'
+                this.state.datefrom != ''
+                  ? this.state.datefrom
+                  : 'Search From Date'
               }
             />
           </View>
- */}
         </View>
         <View style={{flex: 1, backgroundColor: '#fff'}}>
           {this.state.data != '' ? (
@@ -402,9 +451,23 @@ export default class NewslistScreen extends Component {
         {this.state.model && (
           <View style={styles.model}>
             <View style={styles.model1}>
+              <TouchableOpacity onPress={this.CloseMode}>
+                <Icon
+                  name="times"
+                  size={20}
+                  color="red"
+                  style={{
+                    marginTop: 10,
+                    padding: 10,
+                    borderRadius: 20,
+                    marginTop: 0,
+                    marginLeft: 250,
+                  }}
+                />
+              </TouchableOpacity>
               <Icon
                 name="newspaper"
-                size={50}
+                size={30}
                 color="#fff"
                 style={{
                   marginTop: 10,
@@ -467,11 +530,16 @@ export default class NewslistScreen extends Component {
                   />
                 </TouchableOpacity>
               </View>
+
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={this.handleCamera1}>
                 <Text style={styles.submitButtonText}> Upload Image </Text>
               </TouchableOpacity>
+              <Text style={{fontSize: 10, padding: 10, color: '#e97147'}}>
+                {this.state.imagepath}
+              </Text>
+
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() =>
@@ -518,7 +586,7 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: 'center',
     borderWidth: 1,
-    borderColor: '#009688',
+    borderColor: '#e97147',
     borderRadius: 8,
     backgroundColor: '#FFFF',
   },
@@ -622,7 +690,7 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: 'center',
     borderWidth: 1,
-    borderColor: '#009688',
+    borderColor: '#e97147',
     borderRadius: 8,
     backgroundColor: '#FFFF',
   },
