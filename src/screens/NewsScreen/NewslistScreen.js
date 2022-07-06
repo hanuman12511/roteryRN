@@ -46,10 +46,18 @@ export default class NewslistScreen extends Component {
   }
 
   handletitle = text => {
-    this.setState({title: text});
+    if (text != '') {
+      this.setState({title: text});
+    } else {
+      alert('Enter News Title');
+    }
   };
   handleClubname = text => {
-    this.setState({clubname: text});
+    if (text != '') {
+      this.setState({clubname: text});
+    } else {
+      alert('Enter Club Name');
+    }
   };
 
   componentDidMount = async () => {
@@ -198,19 +206,22 @@ export default class NewslistScreen extends Component {
     try {
       const Datefrom = this.state.datefrom;
       const Dateto = this.state.dateto;
-      //console.log(Moment(Datefrom).format('MM DD YYYY'));
-      console.log(Dateto);
-      var newData = this.arrayholder.filter(function(a) {
-        console.log(a.newsdate);
-        return a.newsdate >= Dateto && a.newsdate <= Datefrom;
-        // return new Date(a.newsdate) >= Dateto && new Date(a.newsdate) <= Datefrom;
-      });
+      if (Datefrom >= Dateto) {
+        //console.log(Moment(Datefrom).format('MM DD YYYY'));
+        console.log(Dateto);
+        var newData = this.arrayholder.filter(function(a) {
+          console.log(a.newsdate);
+          return a.newsdate >= Dateto && a.newsdate <= Datefrom;
+          // return new Date(a.newsdate) >= Dateto && new Date(a.newsdate) <= Datefrom;
+        });
 
-      this.setState({
-        data: newData,
-        datefrom: text,
-      });
-
+        this.setState({
+          data: newData,
+          datefrom: text,
+        });
+      } else {
+        alert('Slect From_Date < To_Date');
+      }
       console.log('data=', newData);
     } catch (error) {
       console.log('error=', error);
@@ -250,23 +261,28 @@ export default class NewslistScreen extends Component {
   };
 
   SubmitNews = async (title, club, newsdate) => {
-    try {
-      await firestore()
-        .collection('news')
-        .add({
-          title: title,
-          clubname: club,
-          newsdate: newsdate,
-          image: this.state.imageup,
-        })
-        .then(() => {
-          console.log('User added!');
+    if (title != '' && club != '' && newsdate != '') {
+      try {
+        await firestore()
+          .collection('news')
+          .add({
+            title: title,
+            clubname: club,
+            newsdate: newsdate,
+            image: this.state.imageup,
+          })
+          .then(() => {
+            console.log('User added!');
+          });
+        this.setState({
+          model: false,
         });
-      this.setState({
-        model: false,
-      });
-    } catch (error) {
-      console.log('error while add data in to the firebase ', error);
+        this.getNewsData();
+      } catch (error) {
+        console.log('error while add data in to the firebase ', error);
+      }
+    } else {
+      alert('Enter Full Date');
     }
   };
 
@@ -348,40 +364,37 @@ export default class NewslistScreen extends Component {
               placeholder="Search Club.."
             />
           </View>
+          <DateTimePicker
+            isVisible={this.state.isVisible}
+            mode="date"
+            onConfirm={this.handleConfirm}
+            onCancel={this.hideDatePicker}
+            maximumDate={new Date()}
+            minimumDate={new Date(2021, 0, 1)}
+          />
           <TouchableOpacity
             onPress={this.SelectDateto}
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
               backgroundColor: '#e97147',
               marginTop: 5,
               flex: 1.2,
               borderRadius: 10,
               marginLeft: 10,
               height: 40,
-              alignItems: 'center',
             }}>
-            <DateTimePicker
-              isVisible={this.state.isVisible}
-              mode="date"
-              onConfirm={this.handleConfirm}
-              onCancel={this.hideDatePicker}
-              maximumDate={new Date()}
-              minimumDate={new Date(2021, 0, 1)}
-            />
-
             <Text style={styles.datetotext}>
               {this.state.dateto != '' ? this.state.dateto : 'Date From:'}
             </Text>
+          </TouchableOpacity>
 
-            {/*  <Icon
+          {/*  <Icon
                 name="calendar"
                 size={20}
                 color="#fff"
                 style={{marginRight: 10, marginLeft: 10}}
               /> */}
 
-            {/* <TextInput
+          {/* <TextInput
               style={styles.textInput}
               onChangeText={text => this.searchDate(text)}
               value={this.state.dateto}
@@ -390,14 +403,19 @@ export default class NewslistScreen extends Component {
                 this.state.dateto != '' ? this.state.dateto : 'Search From Date'
               }
             /> */}
-          </TouchableOpacity>
+          <DateTimePicker
+            isVisible={this.state.isVisiblef}
+            mode="date"
+            onConfirm={this.handleConfirmend}
+            onCancel={this.hideDatePickerend}
+            maximumDate={new Date()}
+            minimumDate={new Date(2021, 0, 1)}
+          />
           <TouchableOpacity
             onPress={this.SelectDatefrom}
             style={{
               flex: 1,
               borderRadius: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
               backgroundColor: '#e97147',
 
               marginTop: 5,
@@ -406,15 +424,6 @@ export default class NewslistScreen extends Component {
 
               height: 40,
             }}>
-            <DateTimePicker
-              isVisible={this.state.isVisiblef}
-              mode="date"
-              onConfirm={this.handleConfirmend}
-              onCancel={this.hideDatePickerend}
-              maximumDate={new Date()}
-              minimumDate={new Date(2021, 0, 1)}
-            />
-
             <Text style={styles.datetotext}>
               {this.state.datefrom != '' ? this.state.datefrom : 'Date To'}
             </Text>
@@ -450,12 +459,21 @@ export default class NewslistScreen extends Component {
                 refreshing={this.state.isListRefreshing}
                 onRefresh={this.handleListRefresh.bind(this)}
               />
-              <View style={{padding: 20, height: 20}}>
-                <Text style={{textAlign: 'center'}}>End</Text>
-              </View>
             </>
           ) : (
-            <Text style={{padding: 20, textAlign: 'center'}}>No Data</Text>
+            <View
+              style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
+              <Text
+                style={{
+                  padding: 20,
+                  textAlign: 'center',
+                  flex: 1,
+                  alignItems: 'center',
+                  position: 'absolute',
+                }}>
+                No News Update
+              </Text>
+            </View>
           )}
           <View style={styles.header}>
             <TouchableOpacity style={styles.add} onPress={this.AddNews}>
@@ -525,7 +543,7 @@ export default class NewslistScreen extends Component {
                   minimumDate={new Date(2021, 0, 1)}
                 />
 
-                <TextInput
+                {/*   <TextInput
                   style={styles.inputmd}
                   value={this.state.dateup}
                   underlineColorAndroid="transparent"
@@ -533,20 +551,35 @@ export default class NewslistScreen extends Component {
                   placeholder={
                     this.state.dateup != '' ? this.state.dateup : 'Enter date'
                   }
-                />
-                <TouchableOpacity onPress={this.SelectDate1}>
-                  <Icon
-                    name="calendar"
-                    size={20}
-                    color="#fff"
-                    style={{
-                      marginTop: 10,
-                      backgroundColor: '#e97147',
-                      borderRadius: 5,
-                      padding: 10,
-                    }}
-                  />
-                </TouchableOpacity>
+                /> */}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flex: 1,
+                    margin: 10,
+                  }}>
+                  <TouchableOpacity onPress={this.SelectDate1}>
+                    <Icon
+                      name="calendar"
+                      size={20}
+                      color="#fff"
+                      style={{
+                        marginTop: 10,
+                        backgroundColor: '#e97147',
+                        borderRadius: 5,
+                        padding: 5,
+
+                        marginLeft: 10,
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <Text style={{marginTop: 10, marginLeft: 10}}>
+                    {this.state.dateup != ''
+                      ? this.state.dateup
+                      : 'News Date..'}
+                  </Text>
+                </View>
               </View>
               <View style={{flex: 1, flexDirection: 'row'}}>
                 {/*  <Text style={{fontSize: 10, padding: 10, color: '#e97147'}}>
@@ -570,6 +603,7 @@ export default class NewslistScreen extends Component {
                     marginTop: 10,
                   }}
                 />
+
                 <TouchableOpacity onPress={this.handleCamera1}>
                   <Icon
                     name="minus-circle"
