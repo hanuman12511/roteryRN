@@ -39,6 +39,7 @@ export default class NewslistScreen extends Component {
       imageup: '',
       isListRefreshing: false,
       imagepath: '',
+      imagename: '',
     };
 
     this.arrayholder = [];
@@ -198,7 +199,7 @@ export default class NewslistScreen extends Component {
     try {
       const Datefrom = this.state.datefrom;
       const Dateto = this.state.dateto;
-      console.log(Moment(Datefrom).format('MM DD YYYY'));
+      //console.log(Moment(Datefrom).format('MM DD YYYY'));
       console.log(Dateto);
       var newData = this.arrayholder.filter(function(a) {
         console.log(a.newsdate);
@@ -290,7 +291,8 @@ export default class NewslistScreen extends Component {
     ImagePicker.showImagePicker(option, response => {
       console.log('image show', response);
       this.setState({
-        imagepath: response.fileName,
+        imagepath: response.uri,
+        imagename: response.fileName,
       });
       if (response.didCancel) {
         console.log('User cancel image picker');
@@ -330,23 +332,35 @@ export default class NewslistScreen extends Component {
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.search}>
-          <TextInput
-            style={styles.searchinput}
-            onChangeText={text => this.searchData(text)}
-            value={this.state.text}
-            underlineColorAndroid="transparent"
-            placeholder="Search Title Here"
-          />
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
               backgroundColor: '#e97147',
-              marginRight: 10,
               marginTop: 5,
-
-              width: '92%',
+              flex: 1,
               borderRadius: 10,
+            }}>
+            <TextInput
+              style={styles.searchinput}
+              onChangeText={text => this.searchData(text)}
+              value={this.state.text}
+              underlineColorAndroid="transparent"
+              placeholder="Search Club.."
+            />
+          </View>
+          <TouchableOpacity
+            onPress={this.SelectDateto}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#e97147',
+              marginTop: 5,
+              flex: 1.2,
+              borderRadius: 10,
+              marginLeft: 10,
+              height: 40,
+              alignItems: 'center',
             }}>
             <DateTimePicker
               isVisible={this.state.isVisible}
@@ -356,17 +370,19 @@ export default class NewslistScreen extends Component {
               maximumDate={new Date()}
               minimumDate={new Date(2021, 0, 1)}
             />
-            <Text style={styles.datetotext}> Date From : </Text>
 
-            <TouchableOpacity onPress={this.SelectDateto}>
-              <Icon
+            <Text style={styles.datetotext}>
+              {this.state.dateto != '' ? this.state.dateto : 'Date From:'}
+            </Text>
+
+            {/*  <Icon
                 name="calendar"
                 size={20}
                 color="#fff"
                 style={{marginRight: 10, marginLeft: 10}}
-              />
-            </TouchableOpacity>
-            <TextInput
+              /> */}
+
+            {/* <TextInput
               style={styles.textInput}
               onChangeText={text => this.searchDate(text)}
               value={this.state.dateto}
@@ -374,19 +390,22 @@ export default class NewslistScreen extends Component {
               placeholder={
                 this.state.dateto != '' ? this.state.dateto : 'Search From Date'
               }
-            />
-          </View>
-
-          <View
+            /> */}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this.SelectDatefrom}
             style={{
-              width: '89%',
+              flex: 1,
               borderRadius: 10,
               flexDirection: 'row',
               alignItems: 'center',
               backgroundColor: '#e97147',
-              marginLeft: -6,
-              marginRight: 10,
+
               marginTop: 5,
+              marginLeft: 10,
+              marginRight: 20,
+
+              height: 40,
             }}>
             <DateTimePicker
               isVisible={this.state.isVisiblef}
@@ -396,17 +415,19 @@ export default class NewslistScreen extends Component {
               maximumDate={new Date()}
               minimumDate={new Date(2021, 0, 1)}
             />
-            <Text style={styles.datetotext}>Date To:</Text>
 
-            <TouchableOpacity onPress={this.SelectDatefrom}>
-              <Icon
+            <Text style={styles.datetotext}>
+              {this.state.datefrom != '' ? this.state.datefrom : 'Date To'}
+            </Text>
+
+            {/* <Icon
                 name="calendar"
                 size={20}
                 color="#fff"
                 style={{marginRight: 10, marginLeft: 10}}
-              />
-            </TouchableOpacity>
-            <TextInput
+              /> */}
+
+            {/* <TextInput
               style={styles.textInput}
               onChangeText={text => this.searchDatefrom(text)}
               value={this.state.datefrom}
@@ -416,8 +437,8 @@ export default class NewslistScreen extends Component {
                   ? this.state.datefrom
                   : 'Search To Date'
               }
-            />
-          </View>
+            /> */}
+          </TouchableOpacity>
         </View>
         <View style={{flex: 1, backgroundColor: '#fff'}}>
           {this.state.data != '' ? (
@@ -528,16 +549,37 @@ export default class NewslistScreen extends Component {
                   />
                 </TouchableOpacity>
               </View>
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                {/*  <Text style={{fontSize: 10, padding: 10, color: '#e97147'}}>
+                Image:Name
+                {this.state.imagename}
+              </Text> */}
 
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={this.handleCamera1}>
-                <Text style={styles.submitButtonText}> Upload Image </Text>
-              </TouchableOpacity>
-              <Text style={{fontSize: 10, padding: 10, color: '#e97147'}}>
-                {this.state.imagepath}
-              </Text>
-
+                <Image
+                  source={{
+                    uri:
+                      this.state.imagepath != ''
+                        ? this.state.imagepath
+                        : 'https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png',
+                  }}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 100,
+                    borderWidth: 2,
+                    borderColor: '#e97147',
+                    marginTop: 10,
+                  }}
+                />
+                <TouchableOpacity onPress={this.handleCamera1}>
+                  <Icon
+                    name="minus-circle"
+                    size={20}
+                    color="#e97147"
+                    style={{marginTop: 10, marginLeft: -10}}
+                  />
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() =>
@@ -578,9 +620,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 5,
     marginBottom: 5,
+    flexDirection: 'row',
+    margin: 10,
   },
   searchinput: {
-    width: '94%',
+    flex: 1,
     height: 40,
     textAlign: 'center',
     borderWidth: 1,
@@ -598,6 +642,8 @@ const styles = StyleSheet.create({
   },
 
   add: {
+    width: 40,
+    height: 40,
     padding: 5,
     borderRadius: 100,
     alignItems: 'center',
@@ -616,7 +662,7 @@ const styles = StyleSheet.create({
   },
 
   model: {
-    backgroundColor: '#975e4a',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     flex: 1,
     position: 'absolute',
     elevation: 100,
@@ -626,7 +672,6 @@ const styles = StyleSheet.create({
     left: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0.9,
   },
   model1: {
     backgroundColor: '#fff',
@@ -686,7 +731,12 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderTopLeftRadius: 20,
   },
-  datetotext: {color: '#ffffff', marginLeft: 10},
+  datetotext: {
+    color: '#ffffff',
+    flex: 1,
+    margin: 10,
+    marginLeft: 25,
+  },
 
   textInput: {
     width: '70%',
@@ -718,16 +768,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   submitButton: {
-    backgroundColor: '#e97147',
-    padding: 10,
+    backgroundColor: '#2196F3',
     marginTop: 10,
-    height: 40,
-    width: '50%',
+    marginBottom: 20,
+    borderRadius: 39,
     alignItems: 'center',
-    borderRadius: 30,
-    marginBottom: 5,
+    width: 200,
   },
   submitButtonText: {
     color: 'white',
+    padding: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
   },
 });
