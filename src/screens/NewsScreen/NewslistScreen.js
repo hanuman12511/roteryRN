@@ -30,10 +30,12 @@ export default class NewslistScreen extends Component {
       datefrom: '',
       isVisible: false,
       isVisiblef: false,
+      isVisibler: false,
       model: false,
       title: '',
       clubname: '',
       newsdate: '',
+      dateup: '',
       imageup: '',
       isListRefreshing: false,
       imagepath: '',
@@ -166,12 +168,12 @@ export default class NewslistScreen extends Component {
   //***************   Enter date news update */
   SelectDate1 = () => {
     this.setState({
-      isVisible: true,
+      isVisibler: true,
     });
   };
   hideDatePicker1 = () => {
     this.setState({
-      isVisible: false,
+      isVisibler: false,
     });
   };
 
@@ -184,7 +186,7 @@ export default class NewslistScreen extends Component {
     };
 
     const date1 = date.toLocaleDateString('en-US', options);
-    this.setState({newsdate: date1});
+    this.setState({dateup: date1});
     //this.searchData1(date1);
     this.hideDatePicker1();
   };
@@ -192,33 +194,26 @@ export default class NewslistScreen extends Component {
   //*************   from date */
 
   searchDatefrom = text => {
-    const Datefrom = new Date(text);
-    const Dateto = new Date(this.state.dateto);
+    try {
+      const Datefrom = this.state.datefrom;
+      const Dateto = this.state.dateto;
+      console.log(Moment(Datefrom).format('MM DD YYYY'));
+      console.log(Dateto);
+      var newData = this.arrayholder.filter(function(a) {
+        console.log(a.newsdate);
+        return a.newsdate >= Dateto && a.newsdate <= Datefrom;
+        // return new Date(a.newsdate) >= Dateto && new Date(a.newsdate) <= Datefrom;
+      });
 
-    console.log('to=', this.state.dateto);
+      this.setState({
+        data: newData,
+        datefrom: text,
+      });
 
-    console.log('from', this.state.datefrom);
-
-    /* const newData = this.arrayholder.filter(item => {
-      const itemData = item.newsdate;
-
-      return itemData >= Dateto;
-
-      //return itemData.indexOf(textData > Datefrom) > -1;
-    }); */
-
-    var newData = this.arrayholder.filter(function(a) {
-      return new Date(a.newsdate) >= Dateto && new Date(a.newsdate) <= Datefrom;
-    });
-    console.log(newData);
-
-    this.setState({
-      data: newData,
-      datefrom: text,
-    });
-    // alert('dateto', dateto);
-    // this.arrayholder = newData;
-    console.log('data=', newData);
+      console.log('data=', newData);
+    } catch (error) {
+      console.log('error=', error);
+    }
   };
 
   SelectDatefrom = () => {
@@ -357,8 +352,10 @@ export default class NewslistScreen extends Component {
               mode="date"
               onConfirm={this.handleConfirm}
               onCancel={this.hideDatePicker}
+              maximumDate={new Date()}
+              minimumDate={new Date(2021, 0, 1)}
             />
-            <Text style={styles.datetotext}> Date To : </Text>
+            <Text style={styles.datetotext}> Date From : </Text>
 
             <TouchableOpacity onPress={this.SelectDateto}>
               <Icon
@@ -374,7 +371,7 @@ export default class NewslistScreen extends Component {
               value={this.state.dateto}
               underlineColorAndroid="transparent"
               placeholder={
-                this.state.dateto != '' ? this.state.dateto : 'Search To Date'
+                this.state.dateto != '' ? this.state.dateto : 'Search From Date'
               }
             />
           </View>
@@ -395,8 +392,10 @@ export default class NewslistScreen extends Component {
               mode="date"
               onConfirm={this.handleConfirmend}
               onCancel={this.hideDatePickerend}
+              maximumDate={new Date()}
+              minimumDate={new Date(2021, 0, 1)}
             />
-            <Text style={styles.datetotext}>Date From:</Text>
+            <Text style={styles.datetotext}>Date To:</Text>
 
             <TouchableOpacity onPress={this.SelectDatefrom}>
               <Icon
@@ -414,7 +413,7 @@ export default class NewslistScreen extends Component {
               placeholder={
                 this.state.datefrom != ''
                   ? this.state.datefrom
-                  : 'Search From Date'
+                  : 'Search To Date'
               }
             />
           </View>
@@ -439,7 +438,7 @@ export default class NewslistScreen extends Component {
           )}
           <View style={styles.header}>
             <TouchableOpacity style={styles.add} onPress={this.AddNews}>
-              <Text style={styles.addtext}>Add News</Text>
+              <Icon name="plus" size={20} color="red" />
             </TouchableOpacity>
           </View>
         </View>
@@ -497,19 +496,21 @@ export default class NewslistScreen extends Component {
                   marginRight: 10,
                 }}>
                 <DateTimePicker
-                  isVisible={this.state.isVisible}
+                  isVisible={this.state.isVisibler}
                   mode="date"
                   onConfirm={this.handleConfirm1}
                   onCancel={this.hideDatePicker1}
+                  maximumDate={new Date()}
+                  minimumDate={new Date(2021, 0, 1)}
                 />
 
                 <TextInput
                   style={styles.inputmd}
-                  value={this.state.newsdate}
+                  value={this.state.dateup}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="#9a73ef"
                   placeholder={
-                    this.state.dateto != '' ? this.state.dateto : 'Enter date'
+                    this.state.dateup != '' ? this.state.dateup : 'Enter date'
                   }
                 />
                 <TouchableOpacity onPress={this.SelectDate1}>
@@ -542,7 +543,7 @@ export default class NewslistScreen extends Component {
                   this.SubmitNews(
                     this.state.title,
                     this.state.clubname,
-                    this.state.newsdate,
+                    this.state.dateup,
                   )
                 }>
                 <Text style={styles.submitButtonText}> Submit </Text>
@@ -596,10 +597,15 @@ const styles = StyleSheet.create({
   },
 
   add: {
-    padding: 10,
+    padding: 5,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
+    borderColor: 'red',
+    borderWidth: 2,
+    marginRight: 20,
+    marginBottom: 20,
+    backgroundColor: '#fff',
   },
   addtext: {
     backgroundColor: '#e97147',
@@ -619,7 +625,7 @@ const styles = StyleSheet.create({
     left: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    opacity: 0.8,
+    opacity: 0.9,
   },
   model1: {
     backgroundColor: '#fff',
