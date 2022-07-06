@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, FlatList} from 'react-native';
+import {View, StyleSheet, Text, FlatList, Pressable, Image} from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -12,15 +12,24 @@ import FaqQuestion from 'components/FaqQuesListComponent';
 import ProcessingLoader from 'components/ProcessingLoader';
 import {connect} from 'react-redux';
 import {faqOperations, faqSelectors} from 'idsStore/data/faq';
+import AddComponent from './AddComponent';
+
+// firebase
+// firebase
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/firestore';
+
 class FAQQuestionsScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: '',
-      questions: '',
+      questions: [],
       isProcessing: true,
       isListRefreshing: false,
+      modalVisible: false,
     };
+    this.id = this.props.navigation.getParam('data');
   }
 
   componentDidMount() {
@@ -28,34 +37,30 @@ class FAQQuestionsScreen extends Component {
   }
 
   handleGetQuestions = async () => {
-    const id = this.props.navigation.getParam('data');
-    console.log('data ==', id);
+    let data = [];
+    await firebase
+      .firestore()
+      .collection('faq')
+      .doc(`${this.id.name}`)
+      .collection('question')
+      .get()
+      .then(collectionSnapshot => {
+        // console.log('Total users: ', collectionSnapshot.size);
+        collectionSnapshot.forEach(documentSnapshot => {
+          // console.log(
+          //   'User ID: ',
+          //   documentSnapshot.id,
+          //   documentSnapshot.data(),
+          // );
+          data.push(documentSnapshot.data());
+        });
+      });
+    // console.log('question data', data);
     this.setState({
-      questions: id.questions,
+      questions: data.reverse(),
       isProcessing: false,
       isListRefreshing: false,
     });
-
-    // console.log(id);
-    // const params = {categoryId: id};
-    // await this.props.faqQuestion(params).then(() => {
-    //   const {success, message} = this.props.isFaqQuestion;
-    //   if (success) {
-    //     const {questions} = this.props.isFaqQuestion;
-    //     this.setState({
-    //       questions,
-    //       isProcessing: false,
-    //       isListRefreshing: false,
-    //     });
-    //   } else {
-    //     this.setState({
-    //       questions: '',
-    //       message,
-    //       isProcessing: false,
-    //       isListRefreshing: false,
-    //     });
-    //   }
-    // });
   };
 
   handleListRefresh = async () => {
@@ -73,11 +78,16 @@ class FAQQuestionsScreen extends Component {
     <FaqQuestion item={item} nav={this.props.navigation} />
   );
 
+  setModalVisible = visible => {
+    this.setState({modalVisible: visible});
+  };
+
   keyExtractor = (item, index) => index.toString();
 
   itemSeparator = () => <View style={styles.separator} />;
 
   render() {
+    const {modalVisible} = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <Header
@@ -99,11 +109,29 @@ class FAQQuestionsScreen extends Component {
               refreshing={this.state.isListRefreshing}
               onRefresh={this.handleListRefresh.bind(this)}
             />
+            <Pressable
+              style={[
+                styles.button,
+                styles.buttonOpen,
+                styles.addFaqButtonStyle,
+              ]}
+              onPress={() => this.setModalVisible(true)}>
+              <Text style={styles.textStyle}>Add questions</Text>
+            </Pressable>
           </View>
         ) : (
           <View style={styles.errMessage}>
             <Text style={styles.errText}>{this.state.message}</Text>
           </View>
+        )}
+        {this.state.modalVisible && (
+          <AddComponent
+            closePopup={() => {
+              this.setModalVisible(!modalVisible);
+            }}
+            categories={this.id}
+            refresh={this.handleGetQuestions}
+          />
         )}
         {this.props.isProcessing && <ProcessingLoader />}
       </SafeAreaView>
@@ -241,5 +269,43 @@ const styles = StyleSheet.create({
   errText: {
     fontFamily: 'OpenSans-Bold',
     fontWeight: '700',
+  },
+
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  addFaqButtonStyle: {
+    right: 18,
+    bottom: 25,
+    height: wp(20),
+    width: wp(20),
+    position: 'absolute',
+    padding: wp(2),
+    // borderWidth: 1,
+    // borderColor: '#00bfff',
+    borderRadius: wp(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

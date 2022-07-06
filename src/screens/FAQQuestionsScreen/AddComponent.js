@@ -21,9 +21,8 @@ import DocumentPicker from 'react-native-document-picker';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/firestore';
 
-// Picker model
-import ic_down_black from 'assets/icons/ic_down_black.png';
-import PickerModal from 'react-native-picker-modal-view';
+// customloader
+import CustomLoader from 'components/CustomLoader';
 
 class AddTemplatePopup extends PureComponent {
   constructor(props) {
@@ -38,12 +37,6 @@ class AddTemplatePopup extends PureComponent {
       question: '',
       answear: '',
       uploadImage: '',
-      ticketType: '',
-      selectedTicketType: {
-        Id: 1,
-        Name: 'Select Categories Type',
-        Value: 'Select Categories Type',
-      },
     };
 
     this.parentView = null;
@@ -74,8 +67,7 @@ class AddTemplatePopup extends PureComponent {
     this.setState({answear: a});
   };
 
-  // add Question
-  addQuestion = async () => {
+  addFAQ_Data = async () => {
     try {
       const {questionData, question, answear} = this.state;
       if (question.trim() == '') {
@@ -87,103 +79,36 @@ class AddTemplatePopup extends PureComponent {
         Alert.alert('', 'Answear filed is blank');
         return;
       }
-
       questionData.unshift({question, answear});
-      this.setState({questionData, question: '', answear: ''});
-    } catch (error) {
-      console.log('error while adding questions', error);
-    }
-  };
-  // show question to screen
-  showQuestion = ({item}) => {
-    return (
-      <>
-        <Text style={styles.input}>{item.question}</Text>
-
-        <Text style={styles.input}>{item.answear}</Text>
-      </>
-    );
-  };
-  addFAQ_Data = async () => {
-    try {
-      const {selectedTicketType} = this.state;
       if (this.state.questionData.length === 0) {
         Alert.alert('', 'Please Enter the Question and Answear');
       }
+      this.setState({isLoading: true});
 
       await firebase
         .firestore()
-        .collection('faq')
-        .doc(`${selectedTicketType.Name}`)
-        .update({
+        .collection(`faq`)
+        .doc(`${this.props.categories.name}`)
+        .collection(`question`)
+        .add({
           questions: this.state.questionData,
         })
         .then(() => {
           console.log('User added!');
+          this.setState({isLoading: false});
+          this.props.closePopup();
           const refresh = this.props.refresh;
           refresh('User added!');
-          this.props.closePopup();
         });
     } catch (error) {
       console.log('error while adding faq', error);
     }
   };
 
-  // ticketType
-  handleSelectCategory = (selectedTicketType, index) => {
-    this.setState({selectedTicketType});
-    return selectedTicketType;
-  };
-
-  handleSelectCategoryClose = () => {
-    const {selectedTicketType} = this.state;
-    this.setState({selectedTicketType});
-  };
-
-  renderSelectCategoryPicker = (disabled, selected, showModal) => {
-    const {selectedTicketType} = this.state;
-    const {Name} = selectedTicketType;
-
-    const labelStyle = {
-      flex: 1,
-      fontSize: wp(3),
-      color: '#333',
-    };
-
-    if (Name === 'Select Ticket Type') {
-      labelStyle.color = '#999';
-    }
-
-    const handlePress = disabled ? null : showModal;
-
-    return (
-      <TouchableOpacity underlayColor="transparent" onPress={handlePress}>
-        <View style={styles.pickerSelectView}>
-          <Text style={labelStyle}>{Name}</Text>
-          <Image
-            source={ic_down_black}
-            resizeMode="cover"
-            style={styles.pickerSelectViewIcon}
-          />
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   render() {
     if (this.state.isLoading) {
       return <CustomLoader />;
     }
-
-    let data = [];
-    this.props.categories.map((d, i) => {
-      data.push({
-        Name: d.name,
-        Value: d.name,
-        Id: i + 1,
-      });
-    });
-    console.log('data categories', data);
     return (
       <View
         ref={this.setViewRef}
@@ -191,20 +116,10 @@ class AddTemplatePopup extends PureComponent {
         style={styles.modalContainer}>
         <View style={styles.popupContainer}>
           <Text style={styles.heading}>Add New FAQ</Text>
-          <View style={[styles.pickerContainer, styles.input]}>
-            <PickerModal
-              items={data}
-              selected={this.state.selectedTicketType}
-              onSelected={this.handleSelectCategory.bind(this)}
-              onClosed={this.handleSelectCategoryClose.bind(this)}
-              showToTopButton={true}
-              showAlphabeticalIndex={true}
-              // autoGenerateAlphabeticalIndex={true}
-              searchPlaceholderText="Search"
-              renderSelectView={this.renderSelectCategoryPicker.bind(this)}
-              style={styles.pickerInput}
-            />
-          </View>
+
+          <Text style={styles.input}>
+            Category Type : {this.props.categories.name}
+          </Text>
           <TextInput
             style={styles.input}
             placeholder="Question"
@@ -218,32 +133,10 @@ class AddTemplatePopup extends PureComponent {
             style={styles.input}
             placeholder="Answear"
             placeholderTextColor="#666"
-            maxLength={100}
             multiline
             value={this.state.answear}
             onChangeText={this.handleAsnwearChange}
           />
-          <FlatList
-            data={this.state.questionData}
-            renderItem={this.showQuestion}
-            keyExtractor={item => item.id}
-          />
-
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: 15,
-            }}>
-            <Pressable
-              style={styles.applyButton}
-              onPress={() => {
-                this.addQuestion();
-              }}>
-              <Text style={styles.addQuesStyle}>Add Question</Text>
-            </Pressable>
-          </View>
-
           <Pressable
             style={[styles.button, styles.buttonClose]}
             onPress={() => {
@@ -251,12 +144,6 @@ class AddTemplatePopup extends PureComponent {
             }}>
             <Text style={styles.textStyle}>Submit</Text>
           </Pressable>
-          {/* <TouchableOpacity
-            style={styles.applyButton}
-            onPress={this.handleApply}
-            underlayColor="#ff638b80">
-            <Text style={styles.applyButtonText}>Submit</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     );

@@ -30,7 +30,6 @@ import Faq from 'components/FaqTIleComponent';
 
 // popup
 import Add_Categories from './Add_Categories';
-import AddComponent from './AddComponent';
 
 // firebase
 import firebase from '@react-native-firebase/app';
@@ -49,7 +48,6 @@ class FAQScreen extends Component {
       message: '',
       isListRefreshing: false,
       connectionState: true,
-      modalVisible: false,
       modalCategoryVisible: false,
 
       categoriesData: [
@@ -168,7 +166,7 @@ class FAQScreen extends Component {
   itemSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const {modalVisible, modalCategoryVisible} = this.state;
+    const {modalCategoryVisible} = this.state;
     // console.log(this.state.categories);
     return (
       <SafeAreaView style={styles.container}>
@@ -201,30 +199,13 @@ class FAQScreen extends Component {
                 onPress={() => this.setCategoriesModalVisible(true)}>
                 <Text style={styles.textStyle}>Add Category</Text>
               </Pressable>
-              <Pressable
-                style={[
-                  styles.button,
-                  styles.buttonOpen,
-                  styles.addFaqButtonStyle,
-                ]}
-                onPress={() => this.setModalVisible(true)}>
-                <Text style={styles.textStyle}>Add questions</Text>
-              </Pressable>
             </View>
           ) : (
             <View style={styles.errMessage}>
               <Text style={styles.errText}>{this.state.message}</Text>
             </View>
           ))}
-        {this.state.modalVisible && (
-          <AddComponent
-            closePopup={() => {
-              this.setModalVisible(!modalVisible);
-            }}
-            categories={this.state.categories}
-            refresh={this.getingFAQ_Data}
-          />
-        )}
+
         {this.state.modalCategoryVisible && (
           <Add_Categories
             closePopup={() => {
@@ -252,6 +233,7 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FAQScreen);
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -414,7 +396,7 @@ const styles = StyleSheet.create({
   },
   addFaqButtonCategories: {
     right: 18,
-    bottom: 115,
+    bottom: 25,
     height: wp(20),
     width: wp(20),
     position: 'absolute',

@@ -17,6 +17,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import DocumentPicker from 'react-native-document-picker';
+
+import CustomLoader from 'components/CustomLoader';
+
 // icon
 import gallery from 'assets/icons/gallery.png';
 // firebase
@@ -106,6 +109,17 @@ class AddTemplatePopup extends PureComponent {
   };
   addFAQ_Data = async () => {
     try {
+      if (this.state.titleName.trim() == '') {
+        Alert.alert('', 'Title filed is blank');
+        return;
+      }
+
+      if (this.state.uploadImage.trim() == '') {
+        Alert.alert('', 'Upload Image');
+        return;
+      }
+      this.setState({isLoading: true});
+
       await firebase
         .firestore()
         .collection('faq')
@@ -116,9 +130,11 @@ class AddTemplatePopup extends PureComponent {
         })
         .then(() => {
           console.log('User added!');
+          this.props.closePopup();
           const refresh = this.props.refresh;
           refresh('User added!');
-          this.props.closePopup();
+
+          this.setState({isLoading: false});
         });
     } catch (error) {
       console.log('error while adding faq', error);
