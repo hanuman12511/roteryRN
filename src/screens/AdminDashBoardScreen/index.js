@@ -59,74 +59,25 @@ class DashBoardScreen extends Component {
     try {
       const data = await getBannerSlider();
       const tiles_Data = await getTilesData();
+      console.log('tiles_data', data, tiles_Data);
       let sliderData = JSON.parse(data);
       this.bannerSlider = Object.values(sliderData?.slider_banners);
       // let tiles_data = JSON.parse(tiles_Data);
-      // console.log('tiles_data', tiles_data);
-      this.tiles = tiles_Data;
-      this.tileStyle = this.tiles[0]?.length / 3;
+      console.log('tiles_data', data, tiles_Data);
+      this.tiles = tiles_Data.dg_tiles;
+      this.tileStyle = this.tiles.dg_tiles?.length / 3;
       this.setState({isLoading: false});
       // console.log('tiles', tiles_Data);
+      console.log(
+        'tiles',
+        this.bannerSlider,
+        tiles_Data.President_tiles,
+        parseInt(this.tileStyle),
+      );
     } catch (error) {
       console.log('banner slider issues', error);
     }
   };
-
-  // fetchNotificationCount = async () => {
-  //   try {
-  //     // fetching active school from local storage
-  //     const activeSchool = await getActiveSchool();
-  //     if (!activeSchool) {
-  //       return;
-  //     }
-
-  //     // fetching empId from local storage
-  //     const userInfo = await getData();
-
-  //     if (userInfo) {
-  //       const {idsprimeID} = activeSchool;
-  //       const {empId} = userInfo;
-
-  //       // preparing params
-  //       const params = {
-  //         userId: empId,
-  //         login_type: 'Admin',
-  //         idsprimeID,
-  //       };
-
-  //       // calling api
-  //       const response = await makeRequest(
-  //         BASE_URL + 'getNotificationCount',
-  //         params,
-  //       );
-
-  //       // processing response
-  //       if (response) {
-  //         const {success} = response;
-
-  //         if (success === 1) {
-  //           const {notificationCount} = response;
-  //           this.setState({notificationCount, isLoading: false});
-  //         }
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
-
-  // handleAppStateChange = async nextAppState => {
-  //   try {
-  //     const {appState} = this.state;
-  //     if (appState.match(/inactive|background/) && nextAppState === 'active') {
-  //       await this.fetchNotificationCount();
-  //     }
-
-  //     this.setState({appState: nextAppState});
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
 
   renderItem = ({item}) => {
     return (
@@ -134,7 +85,7 @@ class DashBoardScreen extends Component {
         <View style={styles.tilesContainer}>
           <View
             style={{
-              height: hp(67) / this.tileStyle,
+              height: hp(67) / parseInt(this.tileStyle),
               justifyContent: 'space-between',
             }}>
             <Tile
@@ -181,17 +132,15 @@ class DashBoardScreen extends Component {
               />
             </View>
 
-            {this.tiles?.map(data => (
-              <FlatList
-                data={data}
-                renderItem={this.renderItem}
-                keyExtractor={this.keyExtractor}
-                ItemSeparatorComponent={this.itemSeparator}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.listContentContainer}
-                numColumns={3}
-              />
-            ))}
+            <FlatList
+              data={data}
+              renderItem={this.renderItem}
+              keyExtractor={this.keyExtractor}
+              ItemSeparatorComponent={this.itemSeparator}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.listContentContainer}
+              numColumns={3}
+            />
           </>
         )}
         {this.state.connectionState === false ? (

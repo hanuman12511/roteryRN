@@ -235,7 +235,7 @@ export const getActiveSchool = async () => {
 
 export const clearData = async () => {
   try {
-    await AsyncStorage.clear();
+    await AsyncStorage.removeItem(KEYS.USER_INFO);
   } catch (error) {
     const errMessage = error.message;
     console.log(errMessage);

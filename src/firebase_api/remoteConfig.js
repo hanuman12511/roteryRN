@@ -25,7 +25,6 @@ export const getRemoteConfig = async () => {
     if (activated) {
       // console.log('data activated');
       let confVal = await remoteConfig().getAll();
-      console.log('getData', confVal);
 
       // initilize the data into sets
       let tiles = confVal?.tileManager?._value;
@@ -34,8 +33,10 @@ export const getRemoteConfig = async () => {
       let dgData = confVal?.dg_message?._value;
       //  parse the data and passes into the object form
 
-      let tiles_Data = JSON.parse(tiles);
-      let tiles_data = Object.values(tiles_Data);
+      let tiles_data = JSON.parse(tiles);
+      // let tiles_Data = JSON.parse(tiles);
+      console.log('getData', tiles_data);
+      // let tiles_data = Object.values(tiles_Data);
 
       let faq_Data = JSON.parse(faq);
       let faq_data = Object.values(faq_Data);
