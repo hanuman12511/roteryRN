@@ -109,7 +109,7 @@ class AddTemplatePopup extends PureComponent {
       await firebase
         .firestore()
         .collection('faq')
-        .doc('Media')
+        .doc(`${this.state.titleName}`)
         .set({
           name: this.state.titleName,
           image: this.state.uploadImage,

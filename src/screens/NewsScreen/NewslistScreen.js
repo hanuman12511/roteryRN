@@ -57,16 +57,14 @@ export default class NewslistScreen extends Component {
 
   getNewsData = async () => {
     let data1 = [];
-    const newsdata = await firestore()
+    await firestore()
       .collection('news')
-      .orderBy('newsdate')
-
+      .orderBy('newsdate', 'desc')
       .get()
       .then(collectionSnapshot => {
         console.log('Total news: ', collectionSnapshot.size);
         collectionSnapshot.forEach(documentSnapshot => {
           console.log('news');
-
           data1.push(documentSnapshot.data());
         });
       });
@@ -74,11 +72,8 @@ export default class NewslistScreen extends Component {
       isLoading: false,
       data: data1,
     });
-
     console.log('news===', data1);
-    console.log('data json-=', datajson);
     this.arrayholder = data1;
-
     this.setState({isListRefreshing: false});
   };
 
