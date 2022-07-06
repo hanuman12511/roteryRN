@@ -60,9 +60,8 @@ export default class NewslistScreen extends Component {
       .orderBy('newsdate', 'desc')
       .get()
       .then(collectionSnapshot => {
-        console.log('Total news: ', collectionSnapshot.size);
+        // console.log('Total news: ', collectionSnapshot.size);
         collectionSnapshot.forEach(documentSnapshot => {
-          console.log('news');
           data1.push(documentSnapshot.data());
         });
       });
@@ -70,7 +69,7 @@ export default class NewslistScreen extends Component {
       isLoading: false,
       data: data1,
     });
-    console.log('news===', data1);
+    // console.log('news===', data1);
     this.arrayholder = data1;
     this.setState({isListRefreshing: false});
   };
@@ -88,7 +87,7 @@ export default class NewslistScreen extends Component {
     });
 
     // this.arrayholder = newData;
-    console.log('new data', newData);
+    // console.log('new data', newData);
   }
 
   searchDate(text) {
@@ -108,7 +107,7 @@ export default class NewslistScreen extends Component {
     // alert('dateto', dateto);
     // this.arrayholder = newData;
 
-    console.log('setdateto', newData);
+    // console.log('setdateto', newData);
   }
 
   renderItemshow(props) {
