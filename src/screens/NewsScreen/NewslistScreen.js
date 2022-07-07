@@ -100,6 +100,8 @@ export default class NewslistScreen extends Component {
     this.setState({
       data: newData,
       text: text,
+      datefrom: '',
+      dateto: '',
     });
 
     // this.arrayholder = newData;
@@ -120,6 +122,7 @@ export default class NewslistScreen extends Component {
       data: newData,
       dateto: text,
     });
+
     // alert('dateto', dateto);
     // this.arrayholder = newData;
 
@@ -359,7 +362,7 @@ export default class NewslistScreen extends Component {
   render() {
     return (
       <SafeAreaView style={{flex: 1}}>
-        <View style={styles.search}>
+        <View style={styles.searchbar}>
           <View
             style={{
               flexDirection: 'row',
@@ -648,7 +651,7 @@ const styles = StyleSheet.create({
     elevation: 9,
     shadowColor: '#52006A',
   },
-  search: {
+  searchbar: {
     width: '100%',
     alignItems: 'center',
     marginTop: 5,
