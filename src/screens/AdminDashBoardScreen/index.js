@@ -37,7 +37,7 @@ class DashBoardScreen extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      sliderImages: [],
+      sliderImages: '',
       connectionState: true,
 
       // appState: AppState.currentState,
@@ -59,20 +59,20 @@ class DashBoardScreen extends Component {
     try {
       const data = await getBannerSlider();
       const tiles_Data = await getTilesData();
-      console.log('tiles_data', data, tiles_Data);
       let sliderData = JSON.parse(data);
+      // console.log('sliderData_data', sliderData);
       this.bannerSlider = Object.values(sliderData?.slider_banners);
       // let tiles_data = JSON.parse(tiles_Data);
-      console.log('tiles_data', data, tiles_Data);
+      // console.log('tiles_data2', tiles_Data.dg_tiles.length);
       this.tiles = tiles_Data.dg_tiles;
-      this.tileStyle = this.tiles.dg_tiles?.length / 3;
+      this.tileStyle = tiles_Data.dg_tiles?.length / 3;
       this.setState({isLoading: false});
       // console.log('tiles', tiles_Data);
       console.log(
         'tiles',
         this.bannerSlider,
         tiles_Data.President_tiles,
-        parseInt(this.tileStyle),
+        this.tileStyle,
       );
     } catch (error) {
       console.log('banner slider issues', error);
@@ -85,7 +85,7 @@ class DashBoardScreen extends Component {
         <View style={styles.tilesContainer}>
           <View
             style={{
-              height: hp(67) / parseInt(this.tileStyle),
+              height: hp(67) / this.tileStyle,
               justifyContent: 'space-between',
             }}>
             <Tile
@@ -133,7 +133,7 @@ class DashBoardScreen extends Component {
             </View>
 
             <FlatList
-              data={data}
+              data={this.tiles}
               renderItem={this.renderItem}
               keyExtractor={this.keyExtractor}
               ItemSeparatorComponent={this.itemSeparator}
