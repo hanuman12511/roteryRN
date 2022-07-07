@@ -82,7 +82,12 @@ export default class NewslistScreen extends Component {
     });
     // console.log('news===', data1);
     this.arrayholder = data1;
-    this.setState({isListRefreshing: false});
+    this.setState({
+      isListRefreshing: false,
+      datefrom: '',
+      dateto: '',
+      text: '',
+    });
   };
 
   searchData(text) {
@@ -218,9 +223,10 @@ export default class NewslistScreen extends Component {
         this.setState({
           data: newData,
           datefrom: text,
+          text: '',
         });
       } else {
-        alert('Slect From_Date < To_Date');
+        alert('Enter valid date, selected date is less than from date');
       }
       console.log('data=', newData);
     } catch (error) {
@@ -261,7 +267,9 @@ export default class NewslistScreen extends Component {
   };
 
   SubmitNews = async (title, club, newsdate) => {
-    if (title != '' && club != '' && newsdate != '') {
+    if (
+      (title != '' && club != '' && newsdate != '', this.state.imageup != '')
+    ) {
       try {
         await firestore()
           .collection('news')
@@ -329,7 +337,12 @@ export default class NewslistScreen extends Component {
   handleListRefresh = async () => {
     try {
       // pull-to-refresh
-      this.setState({isListRefreshing: true});
+      this.setState({
+        isListRefreshing: true,
+        datefrom: '',
+        dateto: '',
+        text: '',
+      });
 
       // updating list
       this.getNewsData();
@@ -355,6 +368,7 @@ export default class NewslistScreen extends Component {
               marginTop: 5,
               flex: 1,
               borderRadius: 10,
+              marginRight: 10,
             }}>
             <TextInput
               style={styles.searchinput}
@@ -364,53 +378,27 @@ export default class NewslistScreen extends Component {
               placeholder="Search Club.."
             />
           </View>
-          <DateTimePicker
-            isVisible={this.state.isVisible}
-            mode="date"
-            onConfirm={this.handleConfirm}
-            onCancel={this.hideDatePicker}
-            maximumDate={new Date()}
-            minimumDate={new Date(2021, 0, 1)}
-          />
+
           <TouchableOpacity
             onPress={this.SelectDateto}
             style={{
-              backgroundColor: '#e97147',
-              marginTop: 5,
-              flex: 1.2,
+              flex: 1,
               borderRadius: 10,
-              marginLeft: 10,
+              backgroundColor: '#e97147',
+              // zIndex: '9999',
+              marginTop: 5,
+              marginRight: 0,
               height: 40,
             }}>
-            <Text style={styles.datetotext}>
+            <Text
+              style={{
+                color: '#fff',
+                padding: 10,
+                textAlign: 'center',
+              }}>
               {this.state.dateto != '' ? this.state.dateto : 'Date From:'}
             </Text>
           </TouchableOpacity>
-
-          {/*  <Icon
-                name="calendar"
-                size={20}
-                color="#fff"
-                style={{marginRight: 10, marginLeft: 10}}
-              /> */}
-
-          {/* <TextInput
-              style={styles.textInput}
-              onChangeText={text => this.searchDate(text)}
-              value={this.state.dateto}
-              underlineColorAndroid="transparent"
-              placeholder={
-                this.state.dateto != '' ? this.state.dateto : 'Search From Date'
-              }
-            /> */}
-          <DateTimePicker
-            isVisible={this.state.isVisiblef}
-            mode="date"
-            onConfirm={this.handleConfirmend}
-            onCancel={this.hideDatePickerend}
-            maximumDate={new Date()}
-            minimumDate={new Date(2021, 0, 1)}
-          />
           <TouchableOpacity
             onPress={this.SelectDatefrom}
             style={{
@@ -421,31 +409,17 @@ export default class NewslistScreen extends Component {
               marginTop: 5,
               marginLeft: 10,
               marginRight: 20,
-
               height: 40,
             }}>
-            <Text style={styles.datetotext}>
+            <Text
+              style={{
+                flex: 1,
+                color: '#fff',
+                padding: 10,
+                textAlign: 'center',
+              }}>
               {this.state.datefrom != '' ? this.state.datefrom : 'Date To'}
             </Text>
-
-            {/* <Icon
-                name="calendar"
-                size={20}
-                color="#fff"
-                style={{marginRight: 10, marginLeft: 10}}
-              /> */}
-
-            {/* <TextInput
-              style={styles.textInput}
-              onChangeText={text => this.searchDatefrom(text)}
-              value={this.state.datefrom}
-              underlineColorAndroid="transparent"
-              placeholder={
-                this.state.datefrom != ''
-                  ? this.state.datefrom
-                  : 'Search To Date'
-              }
-            /> */}
           </TouchableOpacity>
         </View>
         <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -475,7 +449,7 @@ export default class NewslistScreen extends Component {
               </Text>
             </View>
           )}
-          <View style={styles.header}>
+          <View style={styles.AddButton}>
             <TouchableOpacity style={styles.add} onPress={this.AddNews}>
               <Icon name="plus" size={20} color="red" />
             </TouchableOpacity>
@@ -574,44 +548,49 @@ export default class NewslistScreen extends Component {
                       }}
                     />
                   </TouchableOpacity>
-                  <Text style={{marginTop: 10, marginLeft: 10}}>
+                  <Text
+                    style={{
+                      marginTop: 10,
+                      marginLeft: 10,
+                    }}>
                     {this.state.dateup != ''
                       ? this.state.dateup
                       : 'News Date..'}
                   </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      marginRight: 10,
+                    }}>
+                    <Image
+                      source={{
+                        uri:
+                          this.state.imagepath != ''
+                            ? this.state.imagepath
+                            : 'https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png',
+                      }}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: 100,
+                        borderWidth: 2,
+                        borderColor: '#e97147',
+                        marginTop: 10,
+                      }}
+                    />
+
+                    <TouchableOpacity onPress={this.handleCamera1}>
+                      <Icon
+                        name="minus-circle"
+                        size={20}
+                        color="#e97147"
+                        style={{marginTop: 10, marginLeft: -10}}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-              <View style={{flex: 1, flexDirection: 'row'}}>
-                {/*  <Text style={{fontSize: 10, padding: 10, color: '#e97147'}}>
-                Image:Name
-                {this.state.imagename}
-              </Text> */}
-
-                <Image
-                  source={{
-                    uri:
-                      this.state.imagepath != ''
-                        ? this.state.imagepath
-                        : 'https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-6.png',
-                  }}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 100,
-                    borderWidth: 2,
-                    borderColor: '#e97147',
-                    marginTop: 10,
-                  }}
-                />
-
-                <TouchableOpacity onPress={this.handleCamera1}>
-                  <Icon
-                    name="minus-circle"
-                    size={20}
-                    color="#e97147"
-                    style={{marginTop: 10, marginLeft: -10}}
-                  />
-                </TouchableOpacity>
               </View>
               <TouchableOpacity
                 style={styles.submitButton}
@@ -626,6 +605,27 @@ export default class NewslistScreen extends Component {
               </TouchableOpacity>
             </View>
           </View>
+        )}
+
+        {this.state.isVisible && (
+          <DateTimePicker
+            isVisible={this.state.isVisible}
+            mode="date"
+            onConfirm={this.handleConfirm}
+            onCancel={this.hideDatePicker}
+            maximumDate={new Date()}
+            minimumDate={new Date(2021, 0, 1)}
+          />
+        )}
+        {this.state.isVisiblef && (
+          <DateTimePicker
+            isVisible={this.state.isVisiblef}
+            mode="date"
+            onConfirm={this.handleConfirmend}
+            onCancel={this.hideDatePickerend}
+            maximumDate={new Date()}
+            minimumDate={new Date(2021, 0, 1)}
+          />
         )}
       </SafeAreaView>
     );
@@ -665,9 +665,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#FFFF',
   },
-  header: {
+  AddButton: {
     position: 'absolute',
-    elevation: 100,
     bottom: 0,
     right: 0,
     alignItems: 'center',
@@ -763,12 +762,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomLeftRadius: 20,
     borderTopLeftRadius: 20,
-  },
-  datetotext: {
-    color: '#ffffff',
-    flex: 1,
-    margin: 10,
-    marginLeft: 25,
   },
 
   textInput: {
